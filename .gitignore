@@ -4,6 +4,7 @@ bookmarks
 elpa/
 texput.log
 .tutor/
+init.el~
 latex-settings.el
 latex-settings.org~
 org-settings.el

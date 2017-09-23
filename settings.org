@@ -1,8 +1,14 @@
 * Evil Mode
+** Evil Mode Settings
+The only reason I even began to consider using emacs was this super awesome mode.
 #+BEGIN_SRC emacs-lisp
 ; Use evil mode
 (require 'evil)
 (evil-mode t)
+#+END_SRC
+** Relative Numbers
+If I'm using EVIL. Why not make the best setting on VIM work
+#+BEGIN_SRC emacs-lisp
 ;Relative Numbers
 (add-hook 'find-file-hook
      (lambda ()
@@ -35,11 +41,22 @@
 #+END_SRC
 * Auto Complete
 #+BEGIN_SRC emacs-lisp
+(require 'auto-complete)
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
+;((add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(global-auto-complete-mode 1)
+(setq-default ac-sources '(ac-source-yasnippet
+                           ac-source-abbrev
+                           ac-source-dictionary
+                            ac-source-words-in-same-mode-buffers))
+(ac-set-trigger-key "TAB")
+(ac-set-trigger-key "<tab>")
+(setq ac-auto-show-menu t)
+(setq ac-auto-start 2)
 #+END_SRC
 * Engine Mode
+
 #+BEGIN_SRC emacs-lisp
 ;Engine Mode
 (require 'engine-mode)
@@ -56,3 +73,4 @@
 "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s")
 
 (engine-mode t)
+#+END_SRC
