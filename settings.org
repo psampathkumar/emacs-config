@@ -1,0 +1,58 @@
+* Evil Mode
+#+BEGIN_SRC emacs-lisp
+; Use evil mode
+(require 'evil)
+(evil-mode t)
+;Relative Numbers
+(add-hook 'find-file-hook
+     (lambda ()
+     (linum-mode)
+      (linum-relative-global-mode t)
+      (set-cursor-color "#ffffff")
+        ))
+(setq linum-relative-current-symbol "")
+#+END_SRC
+* UI Choices
+#+BEGIN_SRC emacs-lisp
+;UI Choices
+(setq-default indent-tabs-mode nil)
+(setq scroll-conservatively 100)
+(setq-default tab-width 2)
+(require 'powerline)
+(powerline-center-evil-theme)
+
+;Horizontal splits for temporary buffers
+(defun split-horizontally-for-temp-buffers ()
+   (when (one-window-p t)
+     (split-window-horizontally)))
+
+(add-hook 'temp-buffer-window-setup-hook
+            'split-horizontally-for-temp-buffers)
+            
+;Window Size
+(if (window-system)
+  (set-frame-size (selected-frame) 500 500))
+#+END_SRC
+* Auto Complete
+#+BEGIN_SRC emacs-lisp
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+#+END_SRC
+* Engine Mode
+#+BEGIN_SRC emacs-lisp
+;Engine Mode
+(require 'engine-mode)
+
+(defengine duckduckgo
+  "https://duckduckgo.com/?q=%s"
+:keybinding "d")
+
+(defengine github
+  "https://github.com/search?ref=simplesearch&q=%s"
+:keybinding "g")
+
+(defengine google
+"http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s")
+
+(engine-mode t)
