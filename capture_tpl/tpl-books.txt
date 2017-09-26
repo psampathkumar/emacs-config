@@ -1,0 +1,7 @@
+* %^{Title} by %^{Author}
+  :PROPERTIES:
+  :PAGES: %^{Pages}
+  :TYPE: %^{Type|Fiction|Non-Fiction}
+  :GENRE: %^{Genre}
+  :END:
+  - Recommended By: %^{Recommended By}

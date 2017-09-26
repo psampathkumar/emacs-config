@@ -10,7 +10,11 @@
  '(org-agenda-files (quote ("todo.org" "tostudy.org")))
  '(org-capture-templates
    (quote
-    (("j" "Journal" entry
+    (("b" "Books to read" entry
+      (file "~/orgStuff/books.org")
+      (file "~/.emacs.d/capture_tpl/tpl-books.txt")
+      :empty-lines-before 1)
+     ("j" "Journal" entry
       (file+datetree "~/orgStuff/journal.org")
       (file "~/.emacs.d/capture_tpl/tpl-journal.txt"))
      ("s" "Study Template")
