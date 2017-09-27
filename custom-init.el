@@ -13,7 +13,7 @@
     (("b" "Books to read" entry
       (file "~/orgStuff/books.org")
       (file "~/.emacs.d/capture_tpl/tpl-books.txt")
-      :empty-lines-before 1)
+      :immediate-finish t :empty-lines-before 1)
      ("j" "Journal" entry
       (file+datetree "~/orgStuff/journal.org")
       (file "~/.emacs.d/capture_tpl/tpl-journal.txt"))
