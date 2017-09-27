@@ -19,13 +19,39 @@ If I'm using EVIL. Why not make the best setting on VIM work
 (setq linum-relative-current-symbol "")
 #+END_SRC
 ** Hard Mode Practice
-   #+BEGIN_SRC emacs-lisp
-    (global-set-key (kbd "<left>") '(lambda()  (interactive)(message "Use Vim keys: h for Left")))
-    (global-set-key (kbd "<right>") '(lambda() (interactive)(message "Use Vim keys: l for Right")))
-    (global-set-key (kbd "<up>") '(lambda() (interactive)(message "Use Vim keys: k for Up")))
-    (global-set-key (kbd "<down>") '(lambda() (interactive)(message "Use Vim keys: j for Down")))
-   #+END_SRC
+   Disabling arrow keys for myself. I want to practice the vim keybindings.
+  #+BEGIN_SRC emacs-lisp
+  (define-minor-mode hard-mode
+  "Overrides all major and minor mode keys" t)
 
+    (defvar hard-mode-map (make-sparse-keymap "hard-mode-map")
+    "Override all major and minor mode keys")
+
+    (add-to-list 'emulation-mode-map-alists
+    `((hard-mode . ,hard-mode-map)))
+
+    (define-key hard-mode-map (kbd "<left>")
+        (lambda ()
+        (interactive)
+        (message "Use Vim keys: h for Left")))
+
+    (define-key hard-mode-map (kbd "<right>")
+        (lambda ()
+        (interactive)
+        (message "Use Vim keys: l for Right")))
+
+    (define-key hard-mode-map (kbd "<up>")
+        (lambda ()
+        (interactive)
+        (message "Use Vim keys: k for Up")))
+
+    (define-key hard-mode-map (kbd "<down>")
+        (lambda ()
+        (interactive)
+        (message "Use Vim keys: j for Down")))
+	
+    (evil-make-intercept-map hard-mode-map)
+  #+END_SRC
 * UI Choices
 #+BEGIN_SRC emacs-lisp
 ;UI Choices
