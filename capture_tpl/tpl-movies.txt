@@ -1,0 +1,8 @@
+* Watch %^{Title} for %^{Anyone famous in the movie?}
+  :PROPERTIES:
+  :LANGUAGE: %^{Lagnuage}
+  :MINUTES: %^{Time in Minutes}
+  :TYPE: %^{Type|MainStream|Documentary|ArtHouse|Classic}
+  :GENRE: %^{Genre}
+  :END:
+  - Recommended By: %^{Recommended By}

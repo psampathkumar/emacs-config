@@ -10,8 +10,13 @@
  '(org-agenda-files (quote ("todo.org" "tostudy.org")))
  '(org-capture-templates
    (quote
-    (("b" "Books to read" entry
-      (file "~/orgStuff/books.org")
+    (("w" "To Watch/Read")
+     ("wm" "Movies to Watch" entry
+      (file+headline "~/orgStuff/books.org" "Movies to Watch")
+      (file "~/.emacs.d/capture_tpl/tpl-movies.txt")
+      :immediate-finish t :empty-lines-before 1)
+     ("wb" "Books to read" entry
+      (file+headline "~/orgStuff/books.org" "Books to Read")
       (file "~/.emacs.d/capture_tpl/tpl-books.txt")
       :immediate-finish t :empty-lines-before 1)
      ("j" "Journal" entry
