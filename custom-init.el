@@ -44,7 +44,8 @@
  '(org-refile-use-outline-path (quote file))
  '(preview-TeX-style-dir "" t)
  '(preview-auto-cache-preamble t)
- '(preview-fast-conversion nil))
+ '(preview-fast-conversion nil)
+ '(show-paren-mode t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -11,4 +11,6 @@ org-settings.el
 org-settings.org~
 settings.el
 settings.org~
-
+#org-settings.org#
+#settings.org#
+eshell/

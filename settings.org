@@ -5,6 +5,8 @@ The only reason I even began to consider using emacs was this super awesome mode
 ; Use evil mode
 (require 'evil)
 (evil-mode t)
+(require 'evil-surround)
+(global-evil-surround-mode t)
 #+END_SRC
 ** Relative Numbers
 If I'm using EVIL. Why not make the best setting on VIM work
@@ -72,6 +74,12 @@ If I'm using EVIL. Why not make the best setting on VIM work
 ;Window Size
 (if (window-system)
   (set-frame-size (selected-frame) 500 500))
+  
+(setq split-width-threshold 0)
+(setq split-height-threshold nil)
+;(require 'highlight-paranthesis)
+;(add-hook emacs-startup-hook 'highlight-paranthesis-mode)
+;(highlight-leading-spaces-mode)
 #+END_SRC
 * Auto Complete
 #+BEGIN_SRC emacs-lisp
@@ -93,7 +101,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
 
 #+BEGIN_SRC emacs-lisp
 ;Engine Mode
-(require 'engine-mode)
+(require 'engine-mode) 
 
 (defengine duckduckgo
   "https://duckduckgo.com/?q=%s"
@@ -108,3 +116,8 @@ If I'm using EVIL. Why not make the best setting on VIM work
 
 (engine-mode t)
 #+END_SRC
+
+
+* Create and customize hooks for programming
+** highlight paranthesis
+** Highlight leading spaces

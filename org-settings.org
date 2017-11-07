@@ -7,8 +7,10 @@
 (add-hook 'org-mode-hook
               (lambda ()
                  (org-bullets-mode t)))
-(setq org-ellipsis " <more>")
-;(setq org-ellipsis "⤵")
+;(setq org-ellipsis "\&#9166;")
+;(setq org-ellipsis "â¤¶")
+(setq org-ellipsis " ⤵")
+;(setq org-ellipsis "Ã¢Â¤Âµ")
 
 ;(global-set-key (kbd "<f7>") 'org-agenda)
 ;(global-set-key (kbd "<f6>") 'org-capture)
