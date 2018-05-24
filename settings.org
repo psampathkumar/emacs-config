@@ -57,6 +57,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
 * UI Choices
 #+BEGIN_SRC emacs-lisp
 ;UI Choices
+(setq visible-bell 1)
 (setq-default indent-tabs-mode nil)
 (setq scroll-conservatively 100)
 (setq-default tab-width 2)
