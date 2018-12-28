@@ -51,7 +51,10 @@
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-targets (quote ((org-agenda-files :level . 1))))
  '(org-refile-use-outline-path (quote file))
- '(preview-TeX-style-dir "")
+ '(package-selected-packages
+   (quote
+    (solarized-theme powerline-evil org-link-minor-mode org-bullets org-agenda-property minimap magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
+ '(preview-TeX-style-dir "" t)
  '(preview-auto-cache-preamble t)
  '(preview-fast-conversion nil)
  '(show-paren-mode t))

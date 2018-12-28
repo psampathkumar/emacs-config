@@ -10,5 +10,6 @@
   (yas-global-mode 1)
     ))
 
-
+(add-hook 'LaTeX-mode-hook (function turn-on-reftex))
+(setq reftex-plug-into-AUCTeX t)
 #+END_SRC

@@ -1,3 +1,8 @@
+* I3 Settings
+** Pop up frames
+#+BEGIN_SRC emacs-lisp
+(setq pop-up-frames t)
+#+END_SRC
 * Evil Mode
 ** Evil Mode Settings
 The only reason I even began to consider using emacs was this super awesome mode.
@@ -54,6 +59,13 @@ If I'm using EVIL. Why not make the best setting on VIM work
 	
     (evil-make-intercept-map hard-mode-map)
   #+END_SRC
+ 
+* Word Count Mode
+#+BEGIN_SRC emacs-lisp
+; Use word count mode
+ (load "wc-mode")
+ (wc-mode t)
+#+END_SRC
 * UI Choices
 #+BEGIN_SRC emacs-lisp
 ;UI Choices
