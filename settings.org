@@ -3,6 +3,24 @@
 #+BEGIN_SRC emacs-lisp
 (setq pop-up-frames t)
 #+END_SRC
+* Python Mode
+** Enable Elpy
+#+BEGIN_SRC emacs-lisp
+(require 'elpy)
+(elpy-enable)
+;keep the backend as jedi
+(setq elpy-rpc-backend "jedi")  
+;(with-eval-after-load 'python
+  ;(defun python-shell-completion-native-try ()
+    ;"Return non-nil if can trigger native completion."
+    ;(let ((python-shell-completion-native-enable t)
+          ;(python-shell-completion-native-output-timeout
+           ;python-shell-completion-native-try-output-timeout))
+      ;(python-shell-completion-native-get-completions
+       ;(get-buffer-process (current-buffer))
+       ;nil "_"))))
+(setq python-shell-completion-native-enable nil)
+#+END_SRC
 * Evil Mode
 ** Evil Mode Settings
 The only reason I even began to consider using emacs was this super awesome mode.
@@ -10,8 +28,6 @@ The only reason I even began to consider using emacs was this super awesome mode
 ; Use evil mode
 (require 'evil)
 (evil-mode t)
-(require 'evil-surround)
-(global-evil-surround-mode t)
 #+END_SRC
 ** Relative Numbers
 If I'm using EVIL. Why not make the best setting on VIM work
@@ -69,12 +85,12 @@ If I'm using EVIL. Why not make the best setting on VIM work
 * UI Choices
 #+BEGIN_SRC emacs-lisp
 ;UI Choices
+(require 'powerline)
+(powerline-center-evil-theme)
 (setq visible-bell 1)
 (setq-default indent-tabs-mode nil)
 (setq scroll-conservatively 100)
 (setq-default tab-width 2)
-(require 'powerline)
-(powerline-center-evil-theme)
 
 ;Horizontal splits for temporary buffers
 (defun split-horizontally-for-temp-buffers ()
@@ -108,6 +124,8 @@ If I'm using EVIL. Why not make the best setting on VIM work
 (ac-set-trigger-key "TAB")
 (ac-set-trigger-key "<tab>")
 (setq ac-auto-show-menu t)
+(setq ac-use-fuzzy t)
+(setq ac-show-menu-immediately-on-auto-complete t)
 (setq ac-auto-start 2)
 #+END_SRC
 * Engine Mode
@@ -129,8 +147,55 @@ If I'm using EVIL. Why not make the best setting on VIM work
 
 (engine-mode t)
 #+END_SRC
+* Python Stuff
 
+** Shorter commands for evil
+  #+BEGIN_SRC emacs-lisp
+;(define-key evil-ex-completion-map "err" 'flymake-goto-next-error)
+(defun err () 
+  (interactive)
+  (flymake-goto-next-error))
 
+(defun gd () 
+  (interactive)
+  (elpy-goto-definition))
+
+(defun doc () 
+  (interactive)
+  (elpy-doc))
+  #+END_SRC
+** Certain Important Hooks
+#+BEGIN_SRC emacs-lisp
+(add-hook 'python-mode-hook 'hs-minor-mode)
+(add-hook 'python-mode-hook 'electric-pair-mode)
+;(add-hook 'python-mode-hook
+;          (lambda ()
+;            (define-key python-mode-map "\"" 'electric-pair)
+;            (define-key python-mode-map "\'" 'electric-pair)
+;            (define-key python-mode-map "(" 'electric-pair)
+;            (define-key python-mode-map "[" 'electric-pair)
+;            (define-key python-mode-map "{" 'electric-pair)))
+#+END_SRC
+** Folding the code
+#+BEGIN_SRC emacs-lisp
+(defun hide () 
+  (interactive)
+  (hs-hide-block))
+(defun hideall () 
+  (interactive)
+  (hs-hide-all))
+(defun see () 
+  (interactive)
+  (hs-show-block))
+(defun seeall () 
+  (interactive)
+  (hs-show-all))
+#+END_SRC
+** Indendation =4
+
+#+BEGIN_SRC emacs-lisp
+(setq python-indent-offset 4)
+#+END_SRC
 * Create and customize hooks for programming
 ** highlight paranthesis
 ** Highlight leading spaces

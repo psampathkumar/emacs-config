@@ -12,4 +12,7 @@
 
 (add-hook 'LaTeX-mode-hook (function turn-on-reftex))
 (setq reftex-plug-into-AUCTeX t)
+
+(load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
 #+END_SRC
