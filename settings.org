@@ -1,8 +1,10 @@
 * I3 Settings
+  Not using for Now
 ** Pop up frames
 #+BEGIN_SRC emacs-lisp
 (setq pop-up-frames t)
 #+END_SRC
+
 * Python Mode
 ** Enable Elpy
 #+BEGIN_SRC emacs-lisp
@@ -10,6 +12,8 @@
 (elpy-enable)
 ;keep the backend as jedi
 (setq elpy-rpc-backend "jedi")  
+; Set PATH
+(setq elpy-rpc-python-command "/usr/bin/python")
 ;(with-eval-after-load 'python
   ;(defun python-shell-completion-native-try ()
     ;"Return non-nil if can trigger native completion."
@@ -106,9 +110,9 @@ If I'm using EVIL. Why not make the best setting on VIM work
   
 (setq split-width-threshold 0)
 (setq split-height-threshold nil)
-;(require 'highlight-paranthesis)
-;(add-hook emacs-startup-hook 'highlight-paranthesis-mode)
-;(highlight-leading-spaces-mode)
+
+;Mini Buffer completion
+(icomplete-mode 1)
 #+END_SRC
 * Auto Complete
 #+BEGIN_SRC emacs-lisp
@@ -198,4 +202,18 @@ If I'm using EVIL. Why not make the best setting on VIM work
 #+END_SRC
 * Create and customize hooks for programming
 ** highlight paranthesis
+#+BEGIN_SRC emacs-lisp
+;(require 'highlight-paranthesis)
+;(add-hook emacs-startup-hook 'highlight-paranthesis-mode)
+;(highlight-leading-spaces-mode)
+#+END_SRC
 ** Highlight leading spaces
+#+BEGIN_SRC emacs-lisp
+;(highlight-leading-spaces-mode)
+#+END_SRC
+* Wind Move
+Move like the Wind, Shadow fax
+#+BEGIN_SRC emacs-lisp
+(when (fboundp 'windmove-default-keybindings)
+  (windmove-default-keybindings))
+#+END_SRC

@@ -4,6 +4,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(LaTeX-command "latex --shell-escape")
  '(TeX-view-program-selection
    (quote
     (((output-dvi has-no-display-manager)
@@ -14,6 +15,7 @@
      (output-pdf "Okular")
      (output-html "xdg-open"))))
  '(custom-enabled-themes (quote (misterioso)))
+ '(ein:output-area-inlined-images t)
  '(inhibit-startup-screen t)
  '(org-agenda-dim-blocked-tasks t)
  '(org-agenda-files (quote ("todo.org" "tostudy.org")))
@@ -53,8 +55,8 @@
  '(org-refile-use-outline-path (quote file))
  '(package-selected-packages
    (quote
-    (solarized-theme powerline-evil org-link-minor-mode org-bullets org-agenda-property minimap magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
- '(preview-TeX-style-dir "" t)
+    (ein auto-package-update powerline-evil org-link-minor-mode org-bullets org-agenda-property minimap magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
+ '(preview-TeX-style-dir "")
  '(preview-auto-cache-preamble t)
  '(preview-fast-conversion nil)
  '(show-paren-mode t))
