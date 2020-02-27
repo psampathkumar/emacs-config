@@ -2,7 +2,7 @@
   Not using for Now
 ** Pop up frames
 #+BEGIN_SRC emacs-lisp
-(setq pop-up-frames t)
+;(setq pop-up-frames t)
 #+END_SRC
 
 * Python Mode
@@ -87,15 +87,30 @@ If I'm using EVIL. Why not make the best setting on VIM work
  (wc-mode t)
 #+END_SRC
 * UI Choices
+** Powerline
 #+BEGIN_SRC emacs-lisp
 ;UI Choices
 (require 'powerline)
 (powerline-center-evil-theme)
+#+END_SRC
+** Visible Bell
+#+BEGIN_SRC emacs-lisp
 (setq visible-bell 1)
+#+END_SRC
+** - 
+#+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
+#+END_SRC
+** Scroll Speed
+#+BEGIN_SRC emacs-lisp
 (setq scroll-conservatively 100)
+#+END_SRC
+** Tab Width
+#+BEGIN_SRC emacs-lisp
 (setq-default tab-width 2)
-
+#+END_SRC
+** Buffer Splitting
+#+BEGIN_SRC emacs-lisp
 ;Horizontal splits for temporary buffers
 (defun split-horizontally-for-temp-buffers ()
    (when (one-window-p t)
@@ -104,6 +119,9 @@ If I'm using EVIL. Why not make the best setting on VIM work
 (add-hook 'temp-buffer-window-setup-hook
             'split-horizontally-for-temp-buffers)
             
+#+END_SRC
+** Window Size
+#+BEGIN_SRC emacs-lisp
 ;Window Size
 (if (window-system)
   (set-frame-size (selected-frame) 500 500))
@@ -111,8 +129,77 @@ If I'm using EVIL. Why not make the best setting on VIM work
 (setq split-width-threshold 0)
 (setq split-height-threshold nil)
 
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
 ;Mini Buffer completion
 (icomplete-mode 1)
+#+END_SRC
+** DOOM THEME
+#+BEGIN_SRC emacs-lisp
+(require 'doom-themes)
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-one t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  ;(doom-themes-neotree-config)
+  ;; or for treemacs users
+  ;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  ;(doom-themes-treemacs-config)
+  
+  ;; Corrects (and improves) org-mode's native fontification.
+(doom-themes-org-config)
+#+END_SRC
+** Centaur Tabs
+#+BEGIN_SRC emacs-lisp
+(require 'centaur-tabs)
+(centaur-tabs-mode t)
+(global-set-key (kbd "C-<prior>")  'centaur-tabs-backward)
+(global-set-key (kbd "C-<next>") 'centaur-tabs-forward)
+(centaur-tabs-headline-match)
+(setq centaur-tabs-style "slant")
+(defun centaur-tabs-buffer-groups ()
+     "`centaur-tabs-buffer-groups' control buffers' group rules.
+
+ Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+ All buffer name start with * will group to \"Emacs\".
+ Other buffer group by `centaur-tabs-get-group-name' with project name."
+     (list
+      (cond
+	;; ((not (eq (file-remote-p (buffer-file-name)) nil))
+	;; "Remote")
+	((or (string-equal "*" (substring (buffer-name) 0 1))
+	     (memq major-mode '(magit-process-mode
+				magit-status-mode
+				magit-diff-mode
+				magit-log-mode
+				magit-file-mode
+				magit-blob-mode
+				magit-blame-mode
+				)))
+	 "Emacs")
+	((memq major-mode '(org-mode
+          python-mode
+          latex-mode
+          fundamental-mode
+          sh-mode
+			    org-agenda-clockreport-mode
+			    org-src-mode
+			    org-agenda-mode
+			    org-beamer-mode
+			    org-indent-mode
+			    org-bullets-mode
+			    org-cdlatex-mode
+			    org-agenda-log-mode
+			    diary-mode
+          ))
+	 "Work")
+	(t
+	 (centaur-tabs-get-group-name (current-buffer))))))
 #+END_SRC
 * Auto Complete
 #+BEGIN_SRC emacs-lisp
@@ -214,6 +301,19 @@ If I'm using EVIL. Why not make the best setting on VIM work
 * Wind Move
 Move like the Wind, Shadow fax
 #+BEGIN_SRC emacs-lisp
-(when (fboundp 'windmove-default-keybindings)
-  (windmove-default-keybindings))
+(global-set-key (kbd "C-c <left>")  'windmove-left)
+(global-set-key (kbd "C-c <right>") 'windmove-right)
+(global-set-key (kbd "C-c <up>")    'windmove-up)
+(global-set-key (kbd "C-c <down>")  'windmove-down)
 #+END_SRC
+* Kill Buffer Function
+#+BEGIN_SRC emacs-lisp
+(defun qq () 
+  (interactive)
+  (kill-current-buffer))
+#+END_SRC
+bold
+*bold*
+/italics/
+_uline_
++strike+

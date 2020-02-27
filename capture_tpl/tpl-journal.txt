@@ -1,6 +1,5 @@
 * %^{Description} %^G
   :LOGBOOK:
-  CLOCK: %^{Start Time}U--%^{End Time}U
   - Added %U
   - %?
   :END:

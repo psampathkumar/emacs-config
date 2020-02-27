@@ -14,9 +14,51 @@
      (output-dvi "xdvi")
      (output-pdf "Okular")
      (output-html "xdg-open"))))
- '(custom-enabled-themes (quote (misterioso)))
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(blink-cursor-mode t)
+ '(compilation-message-face (quote default))
+ '(cua-global-mark-cursor-color "#3cafa5")
+ '(cua-normal-cursor-color "#8d9fa1")
+ '(cua-overwrite-cursor-color "#c49619")
+ '(cua-read-only-cursor-color "#93a61a")
+ '(custom-enabled-themes nil)
+ '(custom-safe-themes
+   (quote
+    ("e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "615123f602c56139c8170c153208406bf467804785007cdc11ba73d18c3a248b" "229c5cf9c9bd4012be621d271320036c69a14758f70e60385e87880b46d60780" "dde8c620311ea241c0b490af8e6f570fdd3b941d7bc209e55cd87884eb733b0e" "a339f231e63aab2a17740e5b3965469e8c0b85eccdfb1f9dbd58a30bdad8562b" "830877f4aab227556548dc0a28bf395d0abe0e3a0ab95455731c9ea5ab5fe4e1" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" default)))
  '(ein:output-area-inlined-images t)
+ '(fci-rule-color "#01323d")
+ '(highlight-changes-colors (quote ("#e2468f" "#7a7ed2")))
+ '(highlight-symbol-colors
+   (quote
+    ("#3c2d404d3269" "#0c3545b04c96" "#4821335d34fc" "#1f853baf5636" "#2e95436932f0" "#44503571311b" "#0af140da592d")))
+ '(highlight-symbol-foreground-color "#9eacac")
+ '(highlight-tail-colors
+   (quote
+    (("#01323d" . 0)
+     ("#687f00" . 20)
+     ("#008981" . 30)
+     ("#0069b0" . 50)
+     ("#936d00" . 60)
+     ("#a72e01" . 70)
+     ("#a81761" . 85)
+     ("#01323d" . 100))))
+ '(hl-bg-colors
+   (quote
+    ("#936d00" "#a72e01" "#ae1212" "#a81761" "#3548a2" "#0069b0" "#008981" "#687f00")))
+ '(hl-fg-colors
+   (quote
+    ("#002732" "#002732" "#002732" "#002732" "#002732" "#002732" "#002732" "#002732")))
+ '(hl-paren-colors (quote ("#3cafa5" "#c49619" "#3c98e0" "#7a7ed2" "#93a61a")))
  '(inhibit-startup-screen t)
+ '(jdee-db-active-breakpoint-face-colors (cons "#073642" "#268bd2"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#073642" "#859900"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#073642" "#56697A"))
+ '(lsp-ui-doc-border "#9eacac")
+ '(nrepl-message-colors
+   (quote
+    ("#ec423a" "#db5823" "#c49619" "#687f00" "#c3d255" "#0069b0" "#3cafa5" "#e2468f" "#7a7ed2")))
+ '(objed-cursor-color "#dc322f")
  '(org-agenda-dim-blocked-tasks t)
  '(org-agenda-files (quote ("todo.org" "tostudy.org")))
  '(org-capture-templates
@@ -46,6 +88,12 @@
  '(org-directory "~/orgStuff")
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
+ '(org-file-apps
+   (quote
+    ((auto-mode . emacs)
+     ("\\.mm\\'" . default)
+     ("\\.x?html?\\'" . default)
+     ("\\.pdf\\'" . "okular %s"))))
  '(org-log-done (quote note))
  '(org-log-into-drawer t)
  '(org-log-reschedule (quote note))
@@ -55,17 +103,55 @@
  '(org-refile-use-outline-path (quote file))
  '(package-selected-packages
    (quote
-    (ein auto-package-update powerline-evil org-link-minor-mode org-bullets org-agenda-property minimap magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
+    (kubernetes-tramp doom-themes centaur-tabs transient ein auto-package-update powerline-evil org-link-minor-mode org-bullets org-agenda-property minimap magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
+ '(pdf-view-midnight-colors (cons "#839496" "#002b36"))
+ '(pos-tip-background-color "#01323d")
+ '(pos-tip-foreground-color "#9eacac")
  '(preview-TeX-style-dir "")
  '(preview-auto-cache-preamble t)
  '(preview-fast-conversion nil)
- '(show-paren-mode t))
+ '(rustic-ansi-faces
+   ["#002b36" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#839496"])
+ '(show-paren-mode t)
+ '(smartrep-mode-line-active-bg (solarized-color-blend "#93a61a" "#01323d" 0.2))
+ '(term-default-bg-color "#002732")
+ '(term-default-fg-color "#8d9fa1")
+ '(vc-annotate-background nil)
+ '(vc-annotate-background-mode nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#ec423a")
+     (40 . "#d9f473492d7b")
+     (60 . "#cf90859324ec")
+     (80 . "#c49619")
+     (100 . "#b4a69be61924")
+     (120 . "#acaa9e9f1949")
+     (140 . "#a46ea134197a")
+     (160 . "#9be5a3a919b7")
+     (180 . "#93a61a")
+     (200 . "#8431a8ba525c")
+     (220 . "#79d1aa2e67f9")
+     (240 . "#6c4cabb57ca2")
+     (260 . "#59a8ad4f90e3")
+     (280 . "#3cafa5")
+     (300 . "#4181a5e9bcb7")
+     (320 . "#4191a150c87d")
+     (340 . "#3fd09cadd43f")
+     (360 . "#3c98e0"))))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (quote
+    (unspecified "#002732" "#01323d" "#ae1212" "#ec423a" "#687f00" "#93a61a" "#936d00" "#c49619" "#0069b0" "#3c98e0" "#a81761" "#e2468f" "#008981" "#3cafa5" "#8d9fa1" "#60767e")))
+ '(xterm-color-names
+   ["#01323d" "#ec423a" "#93a61a" "#c49619" "#3c98e0" "#e2468f" "#3cafa5" "#faf3e0"])
+ '(xterm-color-names-bright
+   ["#002732" "#db5823" "#62787f" "#60767e" "#8d9fa1" "#7a7ed2" "#9eacac" "#ffffee"]))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "JetBrainsMono Nerd Font" :foundry "JB  " :slant normal :weight normal :height 98 :width normal)))))
 
 
