@@ -80,6 +80,22 @@ If I'm using EVIL. Why not make the best setting on VIM work
     (evil-make-intercept-map hard-mode-map)
   #+END_SRC
  
+** Some Vim Functions
+  #+BEGIN_SRC emacs-lisp
+(defun n () 
+  (interactive)
+  (centaur-tabs-forward))
+
+(defun N () 
+  (interactive)
+  (centaur-tabs-backward))
+
+#+END_SRC
+* My Tmux functionality here too
+ #+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c |") 'split-window-right)
+(global-set-key (kbd "C-c -") 'split-window-below)
+#+END_SRC
 * Word Count Mode
 #+BEGIN_SRC emacs-lisp
 ; Use word count mode
@@ -87,6 +103,14 @@ If I'm using EVIL. Why not make the best setting on VIM work
  (wc-mode t)
 #+END_SRC
 * UI Choices
+** Window Divider Mode
+#+BEGIN_SRC emacs-lisp
+(window-divider-mode)
+#+END_SRC
+** Mouse Avoidance Mode
+#+BEGIN_SRC emacs-lisp
+(mouse-avoidance-mode 'animate)
+#+END_SRC
 ** Powerline
 #+BEGIN_SRC emacs-lisp
 ;UI Choices
@@ -160,8 +184,17 @@ If I'm using EVIL. Why not make the best setting on VIM work
 (centaur-tabs-mode t)
 (global-set-key (kbd "C-<prior>")  'centaur-tabs-backward)
 (global-set-key (kbd "C-<next>") 'centaur-tabs-forward)
+
+(defun n () 
+  (interactive)
+  (centaur-tabs-forward))
+
+(defun N () 
+  (interactive)
+  (centaur-tabs-backward))
+
 (centaur-tabs-headline-match)
-(setq centaur-tabs-style "slant")
+(setq centaur-tabs-style "bar")
 (defun centaur-tabs-buffer-groups ()
      "`centaur-tabs-buffer-groups' control buffers' group rules.
 
@@ -301,10 +334,10 @@ If I'm using EVIL. Why not make the best setting on VIM work
 * Wind Move
 Move like the Wind, Shadow fax
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-c <left>")  'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
-(global-set-key (kbd "C-c <up>")    'windmove-up)
-(global-set-key (kbd "C-c <down>")  'windmove-down)
+(global-set-key (kbd "C-c h")  'windmove-left)
+(global-set-key (kbd "C-c l") 'windmove-right)
+(global-set-key (kbd "C-c k>")    'windmove-up)
+(global-set-key (kbd "C-c j")  'windmove-down)
 #+END_SRC
 * Kill Buffer Function
 #+BEGIN_SRC emacs-lisp
