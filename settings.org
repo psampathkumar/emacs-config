@@ -1,29 +1,24 @@
-* I3 Settings
-  Not using for Now
-** Pop up frames
-#+BEGIN_SRC emacs-lisp
-;(setq pop-up-frames t)
-#+END_SRC
+TODO:
+ - Refactor Code using =use-package=
+ - Try to have all installations from MELPA instead of AUR
+ - Auto Update ?
+   
+FONT TEST:
+    normal
+    =emph=
+    *bold*
+    /italics/
+    _uline_
+    +strike+
 
-* Python Mode
-** Enable Elpy
+* Magit and hl-diff
 #+BEGIN_SRC emacs-lisp
-(require 'elpy)
-(elpy-enable)
-;keep the backend as jedi
-(setq elpy-rpc-backend "jedi")  
-; Set PATH
-(setq elpy-rpc-python-command "/usr/bin/python")
-;(with-eval-after-load 'python
-  ;(defun python-shell-completion-native-try ()
-    ;"Return non-nil if can trigger native completion."
-    ;(let ((python-shell-completion-native-enable t)
-          ;(python-shell-completion-native-output-timeout
-           ;python-shell-completion-native-try-output-timeout))
-      ;(python-shell-completion-native-get-completions
-       ;(get-buffer-process (current-buffer))
-       ;nil "_"))))
-(setq python-shell-completion-native-enable nil)
+(require 'magit)
+(require 'evil-magit)
+(require 'diff-hl)
+(add-hook 'python-mode-hook 'diff-hl-mode)
+(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+(setq git-commit-summary-max-length 50)
 #+END_SRC
 * Evil Mode
 ** Evil Mode Settings
@@ -32,6 +27,8 @@ The only reason I even began to consider using emacs was this super awesome mode
 ; Use evil mode
 (require 'evil)
 (evil-mode t)
+(require 'evil-quickscope)
+(global-evil-quickscope-mode 1)
 #+END_SRC
 ** Relative Numbers
 If I'm using EVIL. Why not make the best setting on VIM work
@@ -91,6 +88,47 @@ If I'm using EVIL. Why not make the best setting on VIM work
   (centaur-tabs-backward))
 
 #+END_SRC
+* Python Mode
+** Enable Elpy
+#+BEGIN_SRC emacs-lisp
+(require 'elpy)
+(elpy-enable)
+;keep the backend as jedi
+(setq elpy-rpc-backend "jedi")  
+; Set PATH
+(setq elpy-rpc-python-command "/usr/bin/python")
+;(with-eval-after-load 'python
+  ;(defun python-shell-completion-native-try ()
+    ;"Return non-nil if can trigger native completion."
+    ;(let ((python-shell-completion-native-enable t)
+          ;(python-shell-completion-native-output-timeout
+           ;python-shell-completion-native-try-output-timeout))
+      ;(python-shell-completion-native-get-completions
+       ;(get-buffer-process (current-buffer))
+       ;nil "_"))))
+(setq python-shell-completion-native-enable nil)
+#+END_SRC
+** Run black before saving
+#+BEGIN_SRC emacs-lisp
+(add-hook 'elpy-mode-hook
+            '(lambda ()
+               (when (eq major-mode 'python-mode)
+                 (add-hook 'before-save-hook 'elpy-black-fix-code)))
+)
+#+END_SRC
+** Certain Important Hooks
+#+BEGIN_SRC emacs-lisp
+(add-hook 'python-mode-hook 'hs-minor-mode)
+(add-hook 'python-mode-hook 'electric-pair-mode)
+(add-hook 'python-mode-hook 'turn-on-evil-quickscope-always-mode)
+;(add-hook 'python-mode-hook
+;          (lambda ()
+;            (define-key python-mode-map "\"" 'electric-pair)
+;            (define-key python-mode-map "\'" 'electric-pair)
+;            (define-key python-mode-map "(" 'electric-pair)
+;            (define-key python-mode-map "[" 'electric-pair)
+;            (define-key python-mode-map "{" 'electric-pair)))
+#+END_SRC
 * My Tmux functionality here too
  #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c |") 'split-window-right)
@@ -103,6 +141,17 @@ If I'm using EVIL. Why not make the best setting on VIM work
  (wc-mode t)
 #+END_SRC
 * UI Choices
+** I3 Settings
+  Not using for Now
+*** Pop up frames
+#+BEGIN_SRC emacs-lisp
+;(setq pop-up-frames t)
+#+END_SRC
+
+** Title Bar
+#+BEGIN_SRC emacs-lisp
+(setq frame-title-format "%b")
+#+END_SRC
 ** Window Divider Mode
 #+BEGIN_SRC emacs-lisp
 (window-divider-mode)
@@ -110,6 +159,10 @@ If I'm using EVIL. Why not make the best setting on VIM work
 ** Mouse Avoidance Mode
 #+BEGIN_SRC emacs-lisp
 (mouse-avoidance-mode 'animate)
+#+END_SRC
+** Highlight the Current Line
+#+BEGIN_SRC emacs-lisp
+(global-hl-line-mode)
 #+END_SRC
 ** Powerline
 #+BEGIN_SRC emacs-lisp
@@ -121,11 +174,13 @@ If I'm using EVIL. Why not make the best setting on VIM work
 #+BEGIN_SRC emacs-lisp
 (setq visible-bell 1)
 #+END_SRC
-** - 
+** Make Tabs into spaces
 #+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
 #+END_SRC
-** Scroll Speed
+** Scroll Conservatively
+When point goes outside the window, Emacs usually recenters the buffer point.
+ I’m not crazy about that. This changes scrolling behavior to only scroll as far as point goes.
 #+BEGIN_SRC emacs-lisp
 (setq scroll-conservatively 100)
 #+END_SRC
@@ -253,7 +308,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
 (setq ac-auto-start 2)
 #+END_SRC
 * Engine Mode
-
+To search for selected text from emacs
 #+BEGIN_SRC emacs-lisp
 ;Engine Mode
 (require 'engine-mode) 
@@ -262,17 +317,10 @@ If I'm using EVIL. Why not make the best setting on VIM work
   "https://duckduckgo.com/?q=%s"
 :keybinding "d")
 
-(defengine github
-  "https://github.com/search?ref=simplesearch&q=%s"
-:keybinding "g")
-
-(defengine google
-"http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s")
-
 (engine-mode t)
+(defalias 'duck 'engine/search-duckduckgo)
 #+END_SRC
 * Python Stuff
-
 ** Shorter commands for evil
   #+BEGIN_SRC emacs-lisp
 ;(define-key evil-ex-completion-map "err" 'flymake-goto-next-error)
@@ -288,18 +336,6 @@ If I'm using EVIL. Why not make the best setting on VIM work
   (interactive)
   (elpy-doc))
   #+END_SRC
-** Certain Important Hooks
-#+BEGIN_SRC emacs-lisp
-(add-hook 'python-mode-hook 'hs-minor-mode)
-(add-hook 'python-mode-hook 'electric-pair-mode)
-;(add-hook 'python-mode-hook
-;          (lambda ()
-;            (define-key python-mode-map "\"" 'electric-pair)
-;            (define-key python-mode-map "\'" 'electric-pair)
-;            (define-key python-mode-map "(" 'electric-pair)
-;            (define-key python-mode-map "[" 'electric-pair)
-;            (define-key python-mode-map "{" 'electric-pair)))
-#+END_SRC
 ** Folding the code
 #+BEGIN_SRC emacs-lisp
 (defun hide () 
@@ -334,6 +370,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
 * Wind Move
 Move like the Wind, Shadow fax
 #+BEGIN_SRC emacs-lisp
+(require 'windmove)
 (global-set-key (kbd "C-c h")  'windmove-left)
 (global-set-key (kbd "C-c l") 'windmove-right)
 (global-set-key (kbd "C-c k>")    'windmove-up)
@@ -345,8 +382,53 @@ Move like the Wind, Shadow fax
   (interactive)
   (kill-current-buffer))
 #+END_SRC
-bold
-*bold*
-/italics/
-_uline_
-+strike+
+
+* Evil - Org
+#+BEGIN_SRC emacs-lisp
+(require 'evil-org)
+(add-hook 'org-mode-hook 'evil-org-mode)
+(evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+(require 'evil-org-agenda)
+(evil-org-agenda-set-keys)
+#+END_SRC
+* Org-Mode 
+#+BEGIN_SRC emacs-lisp
+
+;For Org
+(require 'org-bullets)
+;;For Bullets
+(add-hook 'org-mode-hook
+              (lambda ()
+                 (org-bullets-mode t)))
+;(setq org-ellipsis "\&#9166;")
+;(setq org-ellipsis "â¤¶")
+(setq org-ellipsis " ⤵")
+;(setq org-ellipsis "Ã¢Â¤Âµ")
+
+;(global-set-key (kbd "<f7>") 'org-agenda)
+;(global-set-key (kbd "<f6>") 'org-capture)
+(add-hook 'org-capture-mode-hook 'evil-insert-state)
+(define-key global-map "\C-ca" 'org-agenda)
+(define-key global-map "\C-cc" 'org-capture)
+
+
+#+END_SRC
+* Latex Stuff
+#+BEGIN_SRC emacs-lisp
+;For Tex
+(require 'yasnippet)
+(require 'tex)
+(add-hook 'LaTeX-mode-hook (lambda ()
+  (TeX-global-PDF-mode t)
+  (auto-complete-mode t) 
+  (flyspell-mode t)
+  (flymake-mode t)
+  (yas-global-mode 1)
+    ))
+
+(add-hook 'LaTeX-mode-hook (function turn-on-reftex))
+(setq reftex-plug-into-AUCTeX t)
+
+(load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
+#+END_SRC
