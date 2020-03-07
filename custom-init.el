@@ -98,12 +98,15 @@
  '(org-log-into-drawer t)
  '(org-log-reschedule (quote note))
  '(org-log-states-order-reversed t)
+ '(org-modules
+   (quote
+    (ol-bbdb ol-bibtex ol-docview ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe ol-rmail ol-w3m)))
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-targets (quote ((org-agenda-files :level . 1))))
  '(org-refile-use-outline-path (quote file))
  '(package-selected-packages
    (quote
-    (evil-quickscope evil-org evil-magit diff-hl kubernetes-tramp doom-themes centaur-tabs transient ein auto-package-update powerline-evil org-link-minor-mode org-bullets org-agenda-property minimap magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
+    (ledger-mode evil-quickscope evil-org evil-magit diff-hl kubernetes-tramp doom-themes centaur-tabs transient ein auto-package-update powerline-evil org-link-minor-mode org-bullets org-agenda-property minimap magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
  '(pdf-view-midnight-colors (cons "#839496" "#002b36"))
  '(pos-tip-background-color "#01323d")
  '(pos-tip-foreground-color "#9eacac")
@@ -159,5 +162,4 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "JetBrainsMono Nerd Font" :foundry "JB  " :slant normal :weight normal :height 98 :width normal))))
  '(window-divider ((t (:inherit window-border)))))
-
 

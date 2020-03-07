@@ -1,8 +1,11 @@
 TODO:
- - Refactor Code using =use-package=
- - Try to have all installations from MELPA instead of AUR
- - Auto Update ?
-   
+    - Refactor Code using =use-package=
+    - Try to have all installations from MELPA instead of AUR
+    - Auto Update ?
+    - Ledger Mode Hooks
+    - Cleanup on save
+    - Flycheck ?
+    
 FONT TEST:
     normal
     =emph=
@@ -17,6 +20,7 @@ FONT TEST:
 (require 'evil-magit)
 (require 'diff-hl)
 (add-hook 'python-mode-hook 'diff-hl-mode)
+(add-hook 'org-mode-hook 'diff-hl-mode)
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 (setq git-commit-summary-max-length 50)
 #+END_SRC
@@ -35,18 +39,18 @@ If I'm using EVIL. Why not make the best setting on VIM work
 #+BEGIN_SRC emacs-lisp
 ;Relative Numbers
 (add-hook 'find-file-hook
-     (lambda ()
-     (linum-mode)
-      (linum-relative-global-mode t)
-      (set-cursor-color "#ffffff")
-        ))
+    (lambda ()
+    (linum-mode)
+    (linum-relative-global-mode t)
+    (set-cursor-color "#ffffff")
+    ))
 (setq linum-relative-current-symbol "")
 #+END_SRC
 ** Hard Mode Practice
-   Disabling arrow keys for myself. I want to practice the vim keybindings.
-  #+BEGIN_SRC emacs-lisp
-  (define-minor-mode hard-mode
-  "Overrides all major and minor mode keys" t)
+    Disabling arrow keys for myself. I want to practice the vim keybindings.
+    #+BEGIN_SRC emacs-lisp
+    (define-minor-mode hard-mode
+    "Overrides all major and minor mode keys" t)
 
     (defvar hard-mode-map (make-sparse-keymap "hard-mode-map")
     "Override all major and minor mode keys")
@@ -55,37 +59,37 @@ If I'm using EVIL. Why not make the best setting on VIM work
     `((hard-mode . ,hard-mode-map)))
 
     (define-key hard-mode-map (kbd "<left>")
-        (lambda ()
-        (interactive)
-        (message "Use Vim keys: h for Left")))
+    (lambda ()
+    (interactive)
+    (message "Use Vim keys: h for Left")))
 
     (define-key hard-mode-map (kbd "<right>")
-        (lambda ()
-        (interactive)
-        (message "Use Vim keys: l for Right")))
+    (lambda ()
+    (interactive)
+    (message "Use Vim keys: l for Right")))
 
     (define-key hard-mode-map (kbd "<up>")
-        (lambda ()
-        (interactive)
-        (message "Use Vim keys: k for Up")))
+    (lambda ()
+    (interactive)
+    (message "Use Vim keys: k for Up")))
 
     (define-key hard-mode-map (kbd "<down>")
-        (lambda ()
-        (interactive)
-        (message "Use Vim keys: j for Down")))
-	
+    (lambda ()
+    (interactive)
+    (message "Use Vim keys: j for Down")))
+    
     (evil-make-intercept-map hard-mode-map)
-  #+END_SRC
- 
+    #+END_SRC
+    
 ** Some Vim Functions
-  #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (defun n () 
-  (interactive)
-  (centaur-tabs-forward))
+    (interactive)
+    (centaur-tabs-forward))
 
 (defun N () 
-  (interactive)
-  (centaur-tabs-backward))
+    (interactive)
+    (centaur-tabs-backward))
 
 #+END_SRC
 * Python Mode
@@ -98,22 +102,22 @@ If I'm using EVIL. Why not make the best setting on VIM work
 ; Set PATH
 (setq elpy-rpc-python-command "/usr/bin/python")
 ;(with-eval-after-load 'python
-  ;(defun python-shell-completion-native-try ()
+    ;(defun python-shell-completion-native-try ()
     ;"Return non-nil if can trigger native completion."
     ;(let ((python-shell-completion-native-enable t)
-          ;(python-shell-completion-native-output-timeout
-           ;python-shell-completion-native-try-output-timeout))
-      ;(python-shell-completion-native-get-completions
-       ;(get-buffer-process (current-buffer))
-       ;nil "_"))))
+    ;(python-shell-completion-native-output-timeout
+    ;python-shell-completion-native-try-output-timeout))
+    ;(python-shell-completion-native-get-completions
+    ;(get-buffer-process (current-buffer))
+    ;nil "_"))))
 (setq python-shell-completion-native-enable nil)
 #+END_SRC
 ** Run black before saving
 #+BEGIN_SRC emacs-lisp
 (add-hook 'elpy-mode-hook
-            '(lambda ()
-               (when (eq major-mode 'python-mode)
-                 (add-hook 'before-save-hook 'elpy-black-fix-code)))
+    '(lambda ()
+    (when (eq major-mode 'python-mode)
+    (add-hook 'before-save-hook 'elpy-black-fix-code)))
 )
 #+END_SRC
 ** Certain Important Hooks
@@ -130,19 +134,19 @@ If I'm using EVIL. Why not make the best setting on VIM work
 ;            (define-key python-mode-map "{" 'electric-pair)))
 #+END_SRC
 * My Tmux functionality here too
- #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c |") 'split-window-right)
 (global-set-key (kbd "C-c -") 'split-window-below)
 #+END_SRC
 * Word Count Mode
 #+BEGIN_SRC emacs-lisp
 ; Use word count mode
- (load "wc-mode")
- (wc-mode t)
+    (load "wc-mode")
+    (wc-mode t)
 #+END_SRC
 * UI Choices
 ** I3 Settings
-  Not using for Now
+    Not using for Now
 *** Pop up frames
 #+BEGIN_SRC emacs-lisp
 ;(setq pop-up-frames t)
@@ -180,7 +184,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
 #+END_SRC
 ** Scroll Conservatively
 When point goes outside the window, Emacs usually recenters the buffer point.
- I’m not crazy about that. This changes scrolling behavior to only scroll as far as point goes.
+    I’m not crazy about that. This changes scrolling behavior to only scroll as far as point goes.
 #+BEGIN_SRC emacs-lisp
 (setq scroll-conservatively 100)
 #+END_SRC
@@ -192,19 +196,19 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 #+BEGIN_SRC emacs-lisp
 ;Horizontal splits for temporary buffers
 (defun split-horizontally-for-temp-buffers ()
-   (when (one-window-p t)
-     (split-window-horizontally)))
+    (when (one-window-p t)
+    (split-window-horizontally)))
 
 (add-hook 'temp-buffer-window-setup-hook
-            'split-horizontally-for-temp-buffers)
-            
+    'split-horizontally-for-temp-buffers)
+    
 #+END_SRC
 ** Window Size
 #+BEGIN_SRC emacs-lisp
 ;Window Size
 (if (window-system)
-  (set-frame-size (selected-frame) 500 500))
-  
+    (set-frame-size (selected-frame) 500 500))
+    
 (setq split-width-threshold 0)
 (setq split-height-threshold nil)
 
@@ -216,21 +220,21 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 ** DOOM THEME
 #+BEGIN_SRC emacs-lisp
 (require 'doom-themes)
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+    doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    (load-theme 'doom-one t)
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  ;(doom-themes-neotree-config)
-  ;; or for treemacs users
-  ;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-  ;(doom-themes-treemacs-config)
-  
-  ;; Corrects (and improves) org-mode's native fontification.
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
+    
+    ;; Enable custom neotree theme (all-the-icons must be installed!)
+    ;(doom-themes-neotree-config)
+    ;; or for treemacs users
+    ;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+    ;(doom-themes-treemacs-config)
+    
+    ;; Corrects (and improves) org-mode's native fontification.
 (doom-themes-org-config)
 #+END_SRC
 ** Centaur Tabs
@@ -241,53 +245,53 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 (global-set-key (kbd "C-<next>") 'centaur-tabs-forward)
 
 (defun n () 
-  (interactive)
-  (centaur-tabs-forward))
+    (interactive)
+    (centaur-tabs-forward))
 
 (defun N () 
-  (interactive)
-  (centaur-tabs-backward))
+    (interactive)
+    (centaur-tabs-backward))
 
 (centaur-tabs-headline-match)
 (setq centaur-tabs-style "bar")
 (defun centaur-tabs-buffer-groups ()
-     "`centaur-tabs-buffer-groups' control buffers' group rules.
+    "`centaur-tabs-buffer-groups' control buffers' group rules.
 
- Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
- All buffer name start with * will group to \"Emacs\".
- Other buffer group by `centaur-tabs-get-group-name' with project name."
-     (list
-      (cond
-	;; ((not (eq (file-remote-p (buffer-file-name)) nil))
-	;; "Remote")
-	((or (string-equal "*" (substring (buffer-name) 0 1))
-	     (memq major-mode '(magit-process-mode
-				magit-status-mode
-				magit-diff-mode
-				magit-log-mode
-				magit-file-mode
-				magit-blob-mode
-				magit-blame-mode
-				)))
-	 "Emacs")
-	((memq major-mode '(org-mode
-          python-mode
-          latex-mode
-          fundamental-mode
-          sh-mode
-			    org-agenda-clockreport-mode
-			    org-src-mode
-			    org-agenda-mode
-			    org-beamer-mode
-			    org-indent-mode
-			    org-bullets-mode
-			    org-cdlatex-mode
-			    org-agenda-log-mode
-			    diary-mode
-          ))
-	 "Work")
-	(t
-	 (centaur-tabs-get-group-name (current-buffer))))))
+    Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+    All buffer name start with * will group to \"Emacs\".
+    Other buffer group by `centaur-tabs-get-group-name' with project name."
+    (list
+    (cond
+    ;; ((not (eq (file-remote-p (buffer-file-name)) nil))
+    ;; "Remote")
+    ((or (string-equal "*" (substring (buffer-name) 0 1))
+    (memq major-mode '(magit-process-mode
+    magit-status-mode
+    magit-diff-mode
+    magit-log-mode
+    magit-file-mode
+    magit-blob-mode
+    magit-blame-mode
+    )))
+    "Emacs")
+    ((memq major-mode '(org-mode
+    python-mode
+    latex-mode
+    fundamental-mode
+    sh-mode
+    org-agenda-clockreport-mode
+    org-src-mode
+    org-agenda-mode
+    org-beamer-mode
+    org-indent-mode
+    org-bullets-mode
+    org-cdlatex-mode
+    org-agenda-log-mode
+    diary-mode
+    ))
+    "Work")
+    (t
+    (centaur-tabs-get-group-name (current-buffer))))))
 #+END_SRC
 * Auto Complete
 #+BEGIN_SRC emacs-lisp
@@ -297,9 +301,9 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 ;((add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (global-auto-complete-mode 1)
 (setq-default ac-sources '(ac-source-yasnippet
-                           ac-source-abbrev
-                           ac-source-dictionary
-                            ac-source-words-in-same-mode-buffers))
+    ac-source-abbrev
+    ac-source-dictionary
+    ac-source-words-in-same-mode-buffers))
 (ac-set-trigger-key "TAB")
 (ac-set-trigger-key "<tab>")
 (setq ac-auto-show-menu t)
@@ -314,7 +318,7 @@ To search for selected text from emacs
 (require 'engine-mode) 
 
 (defengine duckduckgo
-  "https://duckduckgo.com/?q=%s"
+    "https://duckduckgo.com/?q=%s"
 :keybinding "d")
 
 (engine-mode t)
@@ -322,34 +326,34 @@ To search for selected text from emacs
 #+END_SRC
 * Python Stuff
 ** Shorter commands for evil
-  #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 ;(define-key evil-ex-completion-map "err" 'flymake-goto-next-error)
 (defun err () 
-  (interactive)
-  (flymake-goto-next-error))
+    (interactive)
+    (flymake-goto-next-error))
 
 (defun gd () 
-  (interactive)
-  (elpy-goto-definition))
+    (interactive)
+    (elpy-goto-definition))
 
 (defun doc () 
-  (interactive)
-  (elpy-doc))
-  #+END_SRC
+    (interactive)
+    (elpy-doc))
+    #+END_SRC
 ** Folding the code
 #+BEGIN_SRC emacs-lisp
 (defun hide () 
-  (interactive)
-  (hs-hide-block))
+    (interactive)
+    (hs-hide-block))
 (defun hideall () 
-  (interactive)
-  (hs-hide-all))
+    (interactive)
+    (hs-hide-all))
 (defun see () 
-  (interactive)
-  (hs-show-block))
+    (interactive)
+    (hs-show-block))
 (defun seeall () 
-  (interactive)
-  (hs-show-all))
+    (interactive)
+    (hs-show-all))
 #+END_SRC
 ** Indendation =4
 
@@ -379,8 +383,8 @@ Move like the Wind, Shadow fax
 * Kill Buffer Function
 #+BEGIN_SRC emacs-lisp
 (defun qq () 
-  (interactive)
-  (kill-current-buffer))
+    (interactive)
+    (kill-current-buffer))
 #+END_SRC
 
 * Evil - Org
@@ -398,8 +402,8 @@ Move like the Wind, Shadow fax
 (require 'org-bullets)
 ;;For Bullets
 (add-hook 'org-mode-hook
-              (lambda ()
-                 (org-bullets-mode t)))
+    (lambda ()
+    (org-bullets-mode t)))
 ;(setq org-ellipsis "\&#9166;")
 ;(setq org-ellipsis "â¤¶")
 (setq org-ellipsis " ⤵")
@@ -411,7 +415,6 @@ Move like the Wind, Shadow fax
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cc" 'org-capture)
 
-
 #+END_SRC
 * Latex Stuff
 #+BEGIN_SRC emacs-lisp
@@ -419,11 +422,11 @@ Move like the Wind, Shadow fax
 (require 'yasnippet)
 (require 'tex)
 (add-hook 'LaTeX-mode-hook (lambda ()
-  (TeX-global-PDF-mode t)
-  (auto-complete-mode t) 
-  (flyspell-mode t)
-  (flymake-mode t)
-  (yas-global-mode 1)
+    (TeX-global-PDF-mode t)
+    (auto-complete-mode t) 
+    (flyspell-mode t)
+    (flymake-mode t)
+    (yas-global-mode 1)
     ))
 
 (add-hook 'LaTeX-mode-hook (function turn-on-reftex))
@@ -431,4 +434,19 @@ Move like the Wind, Shadow fax
 
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
+#+END_SRC
+* Ledger Mode
+    To keep track of money
+#+BEGIN_SRC emacs-lisp
+(require 'ledger-mode)
+
+(add-hook 'ledger-mode-hook
+    '(lambda ()
+    (when (eq major-mode 'ledger-mode)
+    (add-hook 'before-save-hook 'ledger-mode-clean-buffer)))
+)
+(add-hook 'ledger-mode-hook 'auto-complete-mode)
+(add-hook 'ledger-mode-hook 'flymake-mode)
+(add-hook 'ledger-mode-hook 'company-mode)
+
 #+END_SRC
