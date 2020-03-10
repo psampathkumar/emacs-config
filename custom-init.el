@@ -106,7 +106,7 @@
  '(org-refile-use-outline-path (quote file))
  '(package-selected-packages
    (quote
-    (ledger-mode evil-quickscope evil-org evil-magit diff-hl kubernetes-tramp doom-themes centaur-tabs transient ein auto-package-update powerline-evil org-link-minor-mode org-bullets org-agenda-property minimap magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
+    (helm ivy org-super-agenda ledger-mode evil-quickscope evil-org evil-magit diff-hl doom-themes centaur-tabs transient ein auto-package-update powerline-evil org-link-minor-mode org-bullets org-agenda-property magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
  '(pdf-view-midnight-colors (cons "#839496" "#002b36"))
  '(pos-tip-background-color "#01323d")
  '(pos-tip-foreground-color "#9eacac")

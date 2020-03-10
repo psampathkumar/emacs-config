@@ -1,10 +1,9 @@
 TODO:
     - Refactor Code using =use-package=
     - Try to have all installations from MELPA instead of AUR
-    - Auto Update ?
-    - Ledger Mode Hooks
-    - Cleanup on save
-    - Flycheck ?
+    - Set priority for package sources
+    - Auto Update
+    - Dumb-jump ?
     
 FONT TEST:
     normal
@@ -46,7 +45,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
     ))
 (setq linum-relative-current-symbol "")
 #+END_SRC
-** Hard Mode Practice
+** COMMENT Hard Mode Practice    
     Disabling arrow keys for myself. I want to practice the vim keybindings.
     #+BEGIN_SRC emacs-lisp
     (define-minor-mode hard-mode
@@ -144,12 +143,17 @@ If I'm using EVIL. Why not make the best setting on VIM work
     (load "wc-mode")
     (wc-mode t)
 #+END_SRC
+* Global Company mode
+#+BEGIN_SRC emacs-lisp
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+#+END_SRC
 * UI Choices
-** I3 Settings
+** COMMENT I3 Settings
     Not using for Now
 *** Pop up frames
 #+BEGIN_SRC emacs-lisp
-;(setq pop-up-frames t)
+(setq pop-up-frames t)
 #+END_SRC
 
 ** Title Bar
@@ -215,7 +219,9 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 ;Mini Buffer completion
-(icomplete-mode 1)
+;(icomplete-mode 1)
+(require 'ivy)
+(ivy-mode 1)
 #+END_SRC
 ** DOOM THEME
 #+BEGIN_SRC emacs-lisp
@@ -360,16 +366,16 @@ To search for selected text from emacs
 #+BEGIN_SRC emacs-lisp
 (setq python-indent-offset 4)
 #+END_SRC
-* Create and customize hooks for programming
+* COMMENT Create and customize hooks for programming
 ** highlight paranthesis
 #+BEGIN_SRC emacs-lisp
-;(require 'highlight-paranthesis)
-;(add-hook emacs-startup-hook 'highlight-paranthesis-mode)
-;(highlight-leading-spaces-mode)
+(require 'highlight-paranthesis)
+(add-hook emacs-startup-hook 'highlight-paranthesis-mode)
+(highlight-leading-spaces-mode)
 #+END_SRC
 ** Highlight leading spaces
 #+BEGIN_SRC emacs-lisp
-;(highlight-leading-spaces-mode)
+(highlight-leading-spaces-mode)
 #+END_SRC
 * Wind Move
 Move like the Wind, Shadow fax
@@ -387,7 +393,8 @@ Move like the Wind, Shadow fax
     (kill-current-buffer))
 #+END_SRC
 
-* Evil - Org
+* Org-Mode 
+** Evil - Org
 #+BEGIN_SRC emacs-lisp
 (require 'evil-org)
 (add-hook 'org-mode-hook 'evil-org-mode)
@@ -395,7 +402,7 @@ Move like the Wind, Shadow fax
 (require 'evil-org-agenda)
 (evil-org-agenda-set-keys)
 #+END_SRC
-* Org-Mode 
+** Basic
 #+BEGIN_SRC emacs-lisp
 
 ;For Org
@@ -403,7 +410,8 @@ Move like the Wind, Shadow fax
 ;;For Bullets
 (add-hook 'org-mode-hook
     (lambda ()
-    (org-bullets-mode t)))
+    (org-bullets-mode t))
+)
 ;(setq org-ellipsis "\&#9166;")
 ;(setq org-ellipsis "â¤¶")
 (setq org-ellipsis " ⤵")
@@ -415,6 +423,21 @@ Move like the Wind, Shadow fax
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cc" 'org-capture)
 
+#+END_SRC
+** Super Org-Agenda
+#+BEGIN_SRC emacs-lisp
+(require 'org-super-agenda)
+(add-hook 'org-mode-hook 'org-super-agenda-mode)
+(setq org-super-agenda-groups
+       '(
+        (:name "Important"
+        ;; Single arguments given alone
+        :priority "A")
+          ;(:auto-tags t) ; Auto seperate tags
+          (:auto-group t) ; auto seperate groups
+          (:habit t)
+        )
+)
 #+END_SRC
 * Latex Stuff
 #+BEGIN_SRC emacs-lisp
