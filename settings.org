@@ -1,13 +1,15 @@
 TODO:
     - Refactor Code using =use-package=
-    - Try to have all installations from MELPA instead of AUR
     - Set priority for package sources
     - Auto Update
     - Dumb-jump ?
+    - Improve code folding =origami.el= or =vimish-fold=
+    - Langtools
     
 FONT TEST:
     normal
     =emph=
+    ~code~
     *bold*
     /italics/
     _uline_
@@ -15,35 +17,46 @@ FONT TEST:
 
 * Magit and hl-diff
 #+BEGIN_SRC emacs-lisp
-(require 'magit)
-(require 'evil-magit)
-(require 'diff-hl)
-(add-hook 'python-mode-hook 'diff-hl-mode)
-(add-hook 'org-mode-hook 'diff-hl-mode)
-(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-(setq git-commit-summary-max-length 50)
+(use-package magit
+  :ensure t
+  :init (setq git-commit-summary-max-length 50)
+)
+(use-package evil-magit
+  :ensure t
+)
+(use-package diff-hl
+  :ensure t
+  :init 
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+    (global-diff-hl-mode)
+)
 #+END_SRC
 * Evil Mode
 ** Evil Mode Settings
 The only reason I even began to consider using emacs was this super awesome mode.
 #+BEGIN_SRC emacs-lisp
 ; Use evil mode
-(require 'evil)
-(evil-mode t)
-(require 'evil-quickscope)
-(global-evil-quickscope-mode 1)
+(use-package evil
+  :config (evil-mode t)
+)
+(use-package evil-quickscope
+  :config (global-evil-quickscope-mode 1)
+)
 #+END_SRC
 ** Relative Numbers
 If I'm using EVIL. Why not make the best setting on VIM work
 #+BEGIN_SRC emacs-lisp
 ;Relative Numbers
-(add-hook 'find-file-hook
-    (lambda ()
-    (linum-mode)
-    (linum-relative-global-mode t)
-    (set-cursor-color "#ffffff")
-    ))
-(setq linum-relative-current-symbol "")
+(use-package linum-relative
+:config
+    (add-hook 'find-file-hook
+        (lambda ()
+    ;    (global-display-line-numbers-mode)
+        (linum-relative-global-mode t)
+        (set-cursor-color "#ffffff")
+        ))
+    (setq linum-relative-current-symbol "")
+)
 #+END_SRC
 ** COMMENT Hard Mode Practice    
     Disabling arrow keys for myself. I want to practice the vim keybindings.
@@ -80,46 +93,49 @@ If I'm using EVIL. Why not make the best setting on VIM work
     (evil-make-intercept-map hard-mode-map)
     #+END_SRC
     
-** Some Vim Functions
-    #+BEGIN_SRC emacs-lisp
-(defun n () 
-    (interactive)
-    (centaur-tabs-forward))
-
-(defun N () 
-    (interactive)
-    (centaur-tabs-backward))
-
-#+END_SRC
 * Python Mode
 ** Enable Elpy
 #+BEGIN_SRC emacs-lisp
-(require 'elpy)
-(elpy-enable)
-;keep the backend as jedi
-(setq elpy-rpc-backend "jedi")  
-; Set PATH
-(setq elpy-rpc-python-command "/usr/bin/python")
-;(with-eval-after-load 'python
-    ;(defun python-shell-completion-native-try ()
-    ;"Return non-nil if can trigger native completion."
-    ;(let ((python-shell-completion-native-enable t)
-    ;(python-shell-completion-native-output-timeout
-    ;python-shell-completion-native-try-output-timeout))
-    ;(python-shell-completion-native-get-completions
-    ;(get-buffer-process (current-buffer))
-    ;nil "_"))))
-(setq python-shell-completion-native-enable nil)
+(use-package elpy
+
+;:bind
+;(:map elpy-mode-map
+        ;("C-M-n" . elpy-nav-forward-block)
+        ;("C-M-p" . elpy-nav-backward-block)
+;)
+:hook (
+       (elpy-mode . (lambda ()
+                        (set (make-local-variable 'company-backends)
+                            '((elpy-company-backend :with company-yasnippet))
+                         )
+                     )
+        )
+      )
+:config
+    (elpy-enable)
+    ;keep the backend as jedi
+    (setq elpy-rpc-backend "jedi")  
+    ; Set PATH
+    (setq elpy-rpc-python-command "/usr/bin/python")
+    ;(with-eval-after-load 'python
+        ;(defun python-shell-completion-native-try ()
+        ;"Return non-nil if can trigger native completion."
+        ;(let ((python-shell-completion-native-enable t)
+        ;(python-shell-completion-native-output-timeout
+        ;python-shell-completion-native-try-output-timeout))
+        ;(python-shell-completion-native-get-completions
+        ;(get-buffer-process (current-buffer))
+        ;nil "_"))))
+;    (setq python-shell-completion-native-enable nil)
+)
 #+END_SRC
 ** Run black before saving
 #+BEGIN_SRC emacs-lisp
-(add-hook 'elpy-mode-hook
-    '(lambda ()
-    (when (eq major-mode 'python-mode)
-    (add-hook 'before-save-hook 'elpy-black-fix-code)))
-)
+(add-hook 'elpy-mode-hook (lambda ()
+                            (add-hook 'before-save-hook
+                                      'elpy-black-fix-code nil t)))
 #+END_SRC
-** Certain Important Hooks
+** Certain Important Hooks TO CHANGE
 #+BEGIN_SRC emacs-lisp
 (add-hook 'python-mode-hook 'hs-minor-mode)
 (add-hook 'python-mode-hook 'electric-pair-mode)
@@ -145,8 +161,61 @@ If I'm using EVIL. Why not make the best setting on VIM work
 #+END_SRC
 * Global Company mode
 #+BEGIN_SRC emacs-lisp
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
+(use-package company
+  :diminish company-mode
+  :init
+  (global-company-mode)
+  :config
+  ;; set default `company-backends'
+  (use-package company-dict)
+  (setq company-backends
+        '((company-files          ; files & directory
+           company-dict       ; keywords
+           company-capf)  ; completion-at-point-functions
+          (company-abbrev company-dabbrev)
+          )
+  )
+  (use-package company-statistics
+    :config
+    (company-statistics-mode)
+  )
+  (use-package company-quickhelp
+    :config
+    (company-quickhelp-mode)
+  )
+  (use-package company-autex
+    :config
+    (company-autex-init)
+  )
+  
+  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+  (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
+  
+  (setq company-auto-complete t)
+  
+  (defun my-company-visible-and-explicit-action-p ()
+    (and (company-tooltip-visible-p)
+         (company-explicit-action-p)))
+
+  (defun company-ac-setup ()
+    "Sets up `company-mode' to behave similarly to `auto-complete-mode'."
+    (setq company-require-match nil)
+    (setq company-auto-complete #'my-company-visible-and-explicit-action-p)
+    (setq company-frontends '(company-echo-metadata-frontend
+                              company-pseudo-tooltip-unless-just-one-frontend-with-delay
+                              company-preview-frontend))
+    (define-key company-active-map [tab]
+      'company-select-next-if-tooltip-visible-or-complete-selection)
+    (define-key company-active-map (kbd "TAB")
+      'company-select-next-if-tooltip-visible-or-complete-selection))
+
+   (company-ac-setup)
+)
+ (setq company-minimum-prefix-length 1)
+;(use-package company-fuzzy
+   ;:config
+   ;(global-company-fuzzy-mode 1)
+ ;)
 #+END_SRC
 * UI Choices
 ** COMMENT I3 Settings
@@ -299,7 +368,17 @@ When point goes outside the window, Emacs usually recenters the buffer point.
     (t
     (centaur-tabs-get-group-name (current-buffer))))))
 #+END_SRC
-* Auto Complete
+ 
+** PopWin
+   popwin is a popup window manager for Emacs which makes you free from 
+   the hell of annoying buffers such like *Help*, *Completions*, *compilation*, and etc
+#+BEGIN_SRC emacs-lisp
+
+(use-package popwin
+  :config (popwin-mode 1)
+)
+#+END_SRC
+* COMMENT Auto Complete
 #+BEGIN_SRC emacs-lisp
 (require 'auto-complete)
 (require 'auto-complete-config)
@@ -380,11 +459,14 @@ To search for selected text from emacs
 * Wind Move
 Move like the Wind, Shadow fax
 #+BEGIN_SRC emacs-lisp
-(require 'windmove)
-(global-set-key (kbd "C-c h")  'windmove-left)
-(global-set-key (kbd "C-c l") 'windmove-right)
-(global-set-key (kbd "C-c k>")    'windmove-up)
-(global-set-key (kbd "C-c j")  'windmove-down)
+(use-package windmove
+:bind (
+        ("C-c h" . windmove-left)
+        ("C-c l" . windmove-right)
+        ("C-c k" .  windmove-up)
+        ("C-c j" . windmove-down)
+      )
+)
 #+END_SRC
 * Kill Buffer Function
 #+BEGIN_SRC emacs-lisp
@@ -424,50 +506,61 @@ Move like the Wind, Shadow fax
 (define-key global-map "\C-cc" 'org-capture)
 
 #+END_SRC
+** Agenda Mode Settings
+#+BEGIN_SRC emacs-lisp
+    (setq 
+    org-agenda-span 'day
+    org-agenda-block-separator "-"
+    org-agenda-compact-blocks t
+    org-agenda-start-with-log-mode t)
+#+END_SRC
 ** Super Org-Agenda
 #+BEGIN_SRC emacs-lisp
 (require 'org-super-agenda)
 (add-hook 'org-mode-hook 'org-super-agenda-mode)
 (setq org-super-agenda-groups
-       '(
-        (:name "Important"
-        ;; Single arguments given alone
-        :priority "A")
-          ;(:auto-tags t) ; Auto seperate tags
-          (:auto-group t) ; auto seperate groups
-          (:habit t)
-        )
+    '(
+    (:name "Important"
+    ;; Single arguments given alone
+    :priority "A")
+    (:auto-tags t) ; Auto seperate tags
+    (:habit t)
+    (:auto-group t) ; auto seperate groups
+    )
 )
 #+END_SRC
 * Latex Stuff
 #+BEGIN_SRC emacs-lisp
 ;For Tex
 (require 'yasnippet)
-(require 'tex)
+;(require 'tex)
 (add-hook 'LaTeX-mode-hook (lambda ()
     (TeX-global-PDF-mode t)
     (auto-complete-mode t) 
     (flyspell-mode t)
     (flymake-mode t)
     (yas-global-mode 1)
+    (latex-extra-mode 1)
+    (prettify-symbols-mode 1)
     ))
 
 (add-hook 'LaTeX-mode-hook (function turn-on-reftex))
 (setq reftex-plug-into-AUCTeX t)
 
-(load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
+;(load "auctex.el" nil t t)
+;(load "preview-latex.el" nil t t)
 #+END_SRC
-* Ledger Mode
+#+END_SRC
+* COMMENT Ledger Mode
     To keep track of money
 #+BEGIN_SRC emacs-lisp
 (require 'ledger-mode)
 
-(add-hook 'ledger-mode-hook
-    '(lambda ()
-    (when (eq major-mode 'ledger-mode)
-    (add-hook 'before-save-hook 'ledger-mode-clean-buffer)))
-)
+;(add-hook 'ledger-mode-hook
+    ;'(lambda ()
+    ;(when (eq major-mode 'ledger-mode)
+    ;(add-hook 'before-save-hook 'ledger-mode-clean-buffer)))
+;)
 (add-hook 'ledger-mode-hook 'auto-complete-mode)
 (add-hook 'ledger-mode-hook 'flymake-mode)
 (add-hook 'ledger-mode-hook 'company-mode)

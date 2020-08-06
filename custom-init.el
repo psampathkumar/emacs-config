@@ -25,7 +25,7 @@
  '(custom-enabled-themes (quote (doom-acario-dark)))
  '(custom-safe-themes
    (quote
-    ("a83f05e5e2f2538376ea2bfdf9e3cd8b7f7593b16299238c1134c1529503fa88" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "c83c095dd01cde64b631fb0fe5980587deec3834dc55144a6e78ff91ebc80b19" "730a87ed3dc2bf318f3ea3626ce21fb054cd3a1471dcd59c81a4071df02cb601" "2cdc13ef8c76a22daa0f46370011f54e79bae00d5736340a5ddfe656a767fddf" "7d708f0168f54b90fc91692811263c995bebb9f68b8b7525d0e2200da9bc903c" "1d50bd38eed63d8de5fcfce37c4bb2f660a02d3dff9cbfd807a309db671ff1af" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "615123f602c56139c8170c153208406bf467804785007cdc11ba73d18c3a248b" "229c5cf9c9bd4012be621d271320036c69a14758f70e60385e87880b46d60780" "dde8c620311ea241c0b490af8e6f570fdd3b941d7bc209e55cd87884eb733b0e" "a339f231e63aab2a17740e5b3965469e8c0b85eccdfb1f9dbd58a30bdad8562b" "830877f4aab227556548dc0a28bf395d0abe0e3a0ab95455731c9ea5ab5fe4e1" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" default)))
+    ("4bca89c1004e24981c840d3a32755bf859a6910c65b829d9441814000cf6c3d0" "fe94e2e42ccaa9714dd0f83a5aa1efeef819e22c5774115a9984293af609fce7" "8a0c35b74b0407ca465dd8db28c9136d5f539868d4867565ee214ac85ceb0d3a" "a83f05e5e2f2538376ea2bfdf9e3cd8b7f7593b16299238c1134c1529503fa88" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "c83c095dd01cde64b631fb0fe5980587deec3834dc55144a6e78ff91ebc80b19" "730a87ed3dc2bf318f3ea3626ce21fb054cd3a1471dcd59c81a4071df02cb601" "2cdc13ef8c76a22daa0f46370011f54e79bae00d5736340a5ddfe656a767fddf" "7d708f0168f54b90fc91692811263c995bebb9f68b8b7525d0e2200da9bc903c" "1d50bd38eed63d8de5fcfce37c4bb2f660a02d3dff9cbfd807a309db671ff1af" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "615123f602c56139c8170c153208406bf467804785007cdc11ba73d18c3a248b" "229c5cf9c9bd4012be621d271320036c69a14758f70e60385e87880b46d60780" "dde8c620311ea241c0b490af8e6f570fdd3b941d7bc209e55cd87884eb733b0e" "a339f231e63aab2a17740e5b3965469e8c0b85eccdfb1f9dbd58a30bdad8562b" "830877f4aab227556548dc0a28bf395d0abe0e3a0ab95455731c9ea5ab5fe4e1" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" default)))
  '(ein:output-area-inlined-images t)
  '(fci-rule-color "#01323d")
  '(highlight-changes-colors (quote ("#e2468f" "#7a7ed2")))
@@ -106,11 +106,11 @@
  '(org-refile-use-outline-path (quote file))
  '(package-selected-packages
    (quote
-    (helm ivy org-super-agenda ledger-mode evil-quickscope evil-org evil-magit diff-hl doom-themes centaur-tabs transient ein auto-package-update powerline-evil org-link-minor-mode org-bullets org-agenda-property magit linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround engine-mode auto-complete-auctex auctex-lua auctex-latexmk)))
+    (company-dict company-fuzzy company-auctex company-bibtex company-quickhelp company-statistics popwin latex-extra latex-math-preview latex-pretty-symbols latex-preview-pane langtool use-package swiper highlight-escape-sequences highlight-indent-guides find-file-in-project fuzzy 2048-game jedi company-math origami helm org-super-agenda evil-quickscope evil-org evil-magit powerline-evil org-link-minor-mode org-bullets org-agenda-property linum-relative highlight-parentheses highlight-leading-spaces highlight-indentation evil-tutor evil-surround auto-complete-auctex auctex-lua auctex-latexmk)))
  '(pdf-view-midnight-colors (cons "#839496" "#002b36"))
  '(pos-tip-background-color "#01323d")
  '(pos-tip-foreground-color "#9eacac")
- '(preview-TeX-style-dir "")
+ '(preview-TeX-style-dir "" t)
  '(preview-auto-cache-preamble t)
  '(preview-fast-conversion nil)
  '(rustic-ansi-faces
