@@ -4,7 +4,9 @@ TODO:
     - Auto Update
     - Dumb-jump ?
     - Improve code folding =origami.el= or =vimish-fold=
-    - Langtools
+    - which-key
+    - company-fuzzy
+    - https://medium.com/analytics-vidhya/managing-a-python-development-environment-in-emacs-43897fd48c6a
     
 FONT TEST:
     normal
@@ -184,6 +186,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
     (company-quickhelp-mode)
   )
   (use-package company-autex
+    :after (autex company)
     :config
     (company-autex-init)
   )
@@ -536,7 +539,6 @@ Move like the Wind, Shadow fax
 ;(require 'tex)
 (add-hook 'LaTeX-mode-hook (lambda ()
     (TeX-global-PDF-mode t)
-    (auto-complete-mode t) 
     (flyspell-mode t)
     (flymake-mode t)
     (yas-global-mode 1)
@@ -566,3 +568,25 @@ Move like the Wind, Shadow fax
 (add-hook 'ledger-mode-hook 'company-mode)
 
 #+END_SRC
+* Grammer
+#+BEGIN_SRC emacs-lisp
+(use-package langtool
+  :init 
+  (setq langtool-java-classpath
+      "/usr/share/languagetool:/usr/share/java/languagetool/*")
+)
+  :config 
+    (defun langtool-autoshow-detail-popup (overlays)
+    (when (require 'popup nil t)
+        ;; Do not interrupt current popup
+        (unless (or popup-instances
+                    ;; suppress popup after type `C-g` .
+                    (memq last-command '(keyboard-quit)))
+        (let ((msg (langtool-details-error-message overlays)))
+            (popup-tip msg)))))
+
+    (setq langtool-autoshow-message-function
+        'langtool-autoshow-detail-popup)
+
+#+END_SRC
+
