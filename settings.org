@@ -4,9 +4,11 @@ TODO:
     - Auto Update
     - Dumb-jump ?
     - Improve code folding =origami.el= or =vimish-fold=
-    - which-key
     - company-fuzzy
-    - https://medium.com/analytics-vidhya/managing-a-python-development-environment-in-emacs-43897fd48c6a
+    - [[https://medium.com/analytics-vidhya/managing-a-python-development-environment-in-emacs-43897fd48c6a][Python IDE]]
+    - god-mode
+    - write-good
+    - [[https://stackoverflow.com/questions/2081577/setting-emacs-to-split-buffers-side-by-side][Split Buffer Horizontally]]
     
 FONT TEST:
     normal
@@ -50,6 +52,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
 #+BEGIN_SRC emacs-lisp
 ;Relative Numbers
 (use-package linum-relative
+:diminish linum-relative-mode
 :config
     (add-hook 'find-file-hook
         (lambda ()
@@ -161,7 +164,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
     (load "wc-mode")
     (wc-mode t)
 #+END_SRC
-* Global Company mode
+* Company mode
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :diminish company-mode
@@ -215,6 +218,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
    (company-ac-setup)
 )
  (setq company-minimum-prefix-length 1)
+ (setq company-idle-delay 0)
 ;(use-package company-fuzzy
    ;:config
    ;(global-company-fuzzy-mode 1)
@@ -230,6 +234,9 @@ If I'm using EVIL. Why not make the best setting on VIM work
 
 ** Title Bar
 #+BEGIN_SRC emacs-lisp
+(use-package diminish
+:ensure t
+)
 (setq frame-title-format "%b")
 #+END_SRC
 ** Window Divider Mode
@@ -268,15 +275,18 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 #+BEGIN_SRC emacs-lisp
 (setq-default tab-width 2)
 #+END_SRC
-** Buffer Splitting
+** Prefer Horizontal Buffer Splitting
 #+BEGIN_SRC emacs-lisp
 ;Horizontal splits for temporary buffers
-(defun split-horizontally-for-temp-buffers ()
-    (when (one-window-p t)
-    (split-window-horizontally)))
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
 
-(add-hook 'temp-buffer-window-setup-hook
-    'split-horizontally-for-temp-buffers)
+;(defun split-horizontally-for-temp-buffers ()
+;    (when (one-window-p t)
+;    (split-window-horizontally)))
+
+;(add-hook 'temp-buffer-window-setup-hook
+;    'split-horizontally-for-temp-buffers)
     
 #+END_SRC
 ** Window Size
@@ -381,6 +391,13 @@ When point goes outside the window, Emacs usually recenters the buffer point.
   :config (popwin-mode 1)
 )
 #+END_SRC
+** Which Key Mode
+   #+BEGIN_SRC emacs-lisp
+   (use-package which-key
+      :diminish which-key-mode
+      :config (which-key-mode)
+   )
+   #+END_SRC
 * COMMENT Auto Complete
 #+BEGIN_SRC emacs-lisp
 (require 'auto-complete)
@@ -415,11 +432,7 @@ To search for selected text from emacs
 * Python Stuff
 ** Shorter commands for evil
     #+BEGIN_SRC emacs-lisp
-;(define-key evil-ex-completion-map "err" 'flymake-goto-next-error)
-(defun err () 
-    (interactive)
-    (flymake-goto-next-error))
-
+    ;(define-key evil-ex-completion-map "err" 'flymake-goto-next-error)
 (defun gd () 
     (interactive)
     (elpy-goto-definition))
@@ -481,11 +494,16 @@ Move like the Wind, Shadow fax
 * Org-Mode 
 ** Evil - Org
 #+BEGIN_SRC emacs-lisp
-(require 'evil-org)
-(add-hook 'org-mode-hook 'evil-org-mode)
-(evil-org-set-key-theme '(navigation insert textobjects additional calendar))
-(require 'evil-org-agenda)
+(use-package evil-org
+:diminish evil-org-mode
+:config
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+)
+(use-package evil-org-agenda
+:config
 (evil-org-agenda-set-keys)
+)
 #+END_SRC
 ** Basic
 #+BEGIN_SRC emacs-lisp
@@ -535,23 +553,29 @@ Move like the Wind, Shadow fax
 * Latex Stuff
 #+BEGIN_SRC emacs-lisp
 ;For Tex
-(require 'yasnippet)
 ;(require 'tex)
+(add-hook 'LaTeX-mode-hook (function turn-on-reftex))
+(setq reftex-plug-into-AUCTeX t)
 (add-hook 'LaTeX-mode-hook (lambda ()
     (TeX-global-PDF-mode t)
     (flyspell-mode t)
-    (flymake-mode t)
-    (yas-global-mode 1)
+    ;(flymake-mode t)
     (latex-extra-mode 1)
     (prettify-symbols-mode 1)
+    (tex-source-correlate-mode)
+    (add-hook 'before-save-hook 'tex-command-run-all)
     ))
-
-(add-hook 'LaTeX-mode-hook (function turn-on-reftex))
-(setq reftex-plug-into-AUCTeX t)
+    
 
 ;(load "auctex.el" nil t t)
 ;(load "preview-latex.el" nil t t)
 #+END_SRC
+* YAS Snippets
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+   :config (yas-global-mode 1)
+)
+
 #+END_SRC
 * COMMENT Ledger Mode
     To keep track of money
@@ -590,3 +614,15 @@ Move like the Wind, Shadow fax
 
 #+END_SRC
 
+* Flymake Mode
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode)
+  :config
+    (defun err () 
+        (interactive)
+        (flycheck-next-error))
+)
+
+#+END_SRC
