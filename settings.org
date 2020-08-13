@@ -9,7 +9,10 @@ TODO:
     - god-mode
     - write-good
     - [[https://stackoverflow.com/questions/2081577/setting-emacs-to-split-buffers-side-by-side][Split Buffer Horizontally]]
-    
+    - evil-leader
+    - neo-tree
+    - evil-nerd-commenter
+    - Customize doom-mode-line [[https://github.com/seagle0128/doom-modeline][Doom Mode Line]]
 FONT TEST:
     normal
     =emph=
@@ -18,7 +21,7 @@ FONT TEST:
     /italics/
     _uline_
     +strike+
-
+    
 * Magit and hl-diff
 #+BEGIN_SRC emacs-lisp
 (use-package magit
@@ -158,71 +161,75 @@ If I'm using EVIL. Why not make the best setting on VIM work
 (global-set-key (kbd "C-c |") 'split-window-right)
 (global-set-key (kbd "C-c -") 'split-window-below)
 #+END_SRC
-* Word Count Mode
-#+BEGIN_SRC emacs-lisp
-; Use word count mode
-    (load "wc-mode")
-    (wc-mode t)
-#+END_SRC
 * Company mode
 #+BEGIN_SRC emacs-lisp
-(use-package company
-  :diminish company-mode
-  :init
-  (global-company-mode)
-  :config
-  ;; set default `company-backends'
-  (use-package company-dict)
-  (setq company-backends
-        '((company-files          ; files & directory
-           company-dict       ; keywords
-           company-capf)  ; completion-at-point-functions
-          (company-abbrev company-dabbrev)
-          )
-  )
-  (use-package company-statistics
+  (use-package company
+    :diminish company-mode
+    :init
+    (global-company-mode)
     :config
-    (company-statistics-mode)
-  )
-  (use-package company-quickhelp
-    :config
-    (company-quickhelp-mode)
-  )
-  (use-package company-autex
-    :after (autex company)
-    :config
-    (company-autex-init)
-  )
+    ;; set default `company-backends'
+    (use-package company-dict)
+  ;;   (setq company-backends
+  ;;         '((company-files          ; files & directory
+  ;;            company-dict       ; keywords
+  ;;            company-capf
+  ;;            company-yasnippet
+  ;;            company-ispell
+  ;;            company-semantic
+  ;; )  ; completion-at-point-functions
+  ;;           (company-abbrev company-dabbrev)
+  ;;           )
+  ;;   )
+   (add-to-list 'company-backends 'company-math-symbols-unicode)
+    (use-package company-statistics
+      :config
+      (company-statistics-mode)
+    )
+    (use-package company-quickhelp
+      :config
+      (company-quickhelp-mode)
+    )
+    (use-package company-autex
+      :after (autex company)
+      :config
+      (company-autex-init)
+    )
   
-  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
-  (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
+    (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+    (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
   
-  (setq company-auto-complete t)
+    (setq company-auto-complete t)
   
-  (defun my-company-visible-and-explicit-action-p ()
-    (and (company-tooltip-visible-p)
-         (company-explicit-action-p)))
+    (defun my-company-visible-and-explicit-action-p ()
+      (and (company-tooltip-visible-p)
+           (company-explicit-action-p)))
 
-  (defun company-ac-setup ()
-    "Sets up `company-mode' to behave similarly to `auto-complete-mode'."
-    (setq company-require-match nil)
-    (setq company-auto-complete #'my-company-visible-and-explicit-action-p)
-    (setq company-frontends '(company-echo-metadata-frontend
-                              company-pseudo-tooltip-unless-just-one-frontend-with-delay
-                              company-preview-frontend))
-    (define-key company-active-map [tab]
-      'company-select-next-if-tooltip-visible-or-complete-selection)
-    (define-key company-active-map (kbd "TAB")
-      'company-select-next-if-tooltip-visible-or-complete-selection))
+    (defun company-ac-setup ()
+      "Sets up `company-mode' to behave similarly to `auto-complete-mode'."
+      (setq company-require-match nil)
+      (setq company-auto-complete #'my-company-visible-and-explicit-action-p)
+      (setq company-frontends '(company-echo-metadata-frontend
+                                company-pseudo-tooltip-unless-just-one-frontend-with-delay
+                                company-preview-frontend))
+      (define-key company-active-map [tab]
+        'company-select-next-if-tooltip-visible-or-complete-selection)
+      (define-key company-active-map (kbd "TAB")
+        'company-select-next-if-tooltip-visible-or-complete-selection))
 
-   (company-ac-setup)
-)
- (setq company-minimum-prefix-length 1)
- (setq company-idle-delay 0)
-;(use-package company-fuzzy
-   ;:config
-   ;(global-company-fuzzy-mode 1)
- ;)
+     (company-ac-setup)
+  )
+   (setq company-require-match nil)            ; Don't require match, so you can still move your cursor as expected.
+   (setq company-tooltip-align-annotations t)  ; Align annotation to the right side.
+   (setq company-eclim-auto-save nil)          ; Stop eclim auto save.
+   (setq company-dabbrev-downcase nil)         ; No downcase when completion
+   (setq company-minimum-prefix-length 1)
+   (setq company-idle-delay 0)
+  (use-package company-fuzzy
+     :config
+     (global-company-fuzzy-mode 1)
+     (setq company-fuzzy-sorting-backend 'alphabetic)
+   )
 #+END_SRC
 * UI Choices
 ** COMMENT I3 Settings
@@ -254,8 +261,21 @@ If I'm using EVIL. Why not make the best setting on VIM work
 ** Powerline
 #+BEGIN_SRC emacs-lisp
 ;UI Choices
-(require 'powerline)
-(powerline-center-evil-theme)
+(use-package all-the-icons)
+(use-package doom-modeline
+:after (all-the-icons)
+:config 
+  (doom-modeline-mode)
+  (setq doom-modeline-icon t);(display-graphic-p))
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-major-mode-color-icon t)
+  (setq doom-modeline-enable-word-count t)
+  (setq doom-modeline-minor-modes t)
+  (setq doom-modeline-checker-simple-format t)
+;  (setq doom-modeline-unicode-fallback t)
+)
+;(require 'powerline)
+;(powerline-center-evil-theme)
 #+END_SRC
 ** Visible Bell
 #+BEGIN_SRC emacs-lisp
@@ -398,24 +418,6 @@ When point goes outside the window, Emacs usually recenters the buffer point.
       :config (which-key-mode)
    )
    #+END_SRC
-* COMMENT Auto Complete
-#+BEGIN_SRC emacs-lisp
-(require 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
-;((add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(global-auto-complete-mode 1)
-(setq-default ac-sources '(ac-source-yasnippet
-    ac-source-abbrev
-    ac-source-dictionary
-    ac-source-words-in-same-mode-buffers))
-(ac-set-trigger-key "TAB")
-(ac-set-trigger-key "<tab>")
-(setq ac-auto-show-menu t)
-(setq ac-use-fuzzy t)
-(setq ac-show-menu-immediately-on-auto-complete t)
-(setq ac-auto-start 2)
-#+END_SRC
 * Engine Mode
 To search for selected text from emacs
 #+BEGIN_SRC emacs-lisp
@@ -460,17 +462,6 @@ To search for selected text from emacs
 
 #+BEGIN_SRC emacs-lisp
 (setq python-indent-offset 4)
-#+END_SRC
-* COMMENT Create and customize hooks for programming
-** highlight paranthesis
-#+BEGIN_SRC emacs-lisp
-(require 'highlight-paranthesis)
-(add-hook emacs-startup-hook 'highlight-paranthesis-mode)
-(highlight-leading-spaces-mode)
-#+END_SRC
-** Highlight leading spaces
-#+BEGIN_SRC emacs-lisp
-(highlight-leading-spaces-mode)
 #+END_SRC
 * Wind Move
 Move like the Wind, Shadow fax
@@ -563,7 +554,7 @@ Move like the Wind, Shadow fax
     (latex-extra-mode 1)
     (prettify-symbols-mode 1)
     (tex-source-correlate-mode)
-    (add-hook 'before-save-hook 'tex-command-run-all)
+    (add-hook 'before-save-hook 'TeX-command-run-all nil t)
     ))
     
 
@@ -575,21 +566,6 @@ Move like the Wind, Shadow fax
 (use-package yasnippet
    :config (yas-global-mode 1)
 )
-
-#+END_SRC
-* COMMENT Ledger Mode
-    To keep track of money
-#+BEGIN_SRC emacs-lisp
-(require 'ledger-mode)
-
-;(add-hook 'ledger-mode-hook
-    ;'(lambda ()
-    ;(when (eq major-mode 'ledger-mode)
-    ;(add-hook 'before-save-hook 'ledger-mode-clean-buffer)))
-;)
-(add-hook 'ledger-mode-hook 'auto-complete-mode)
-(add-hook 'ledger-mode-hook 'flymake-mode)
-(add-hook 'ledger-mode-hook 'company-mode)
 
 #+END_SRC
 * Grammer
@@ -624,5 +600,55 @@ Move like the Wind, Shadow fax
         (interactive)
         (flycheck-next-error))
 )
+
+#+END_SRC
+* COMMENT Word Count Mode
+#+BEGIN_SRC emacs-lisp
+; Use word count mode
+    (load "wc-mode")
+    (wc-mode t)
+#+END_SRC
+* COMMENT Auto Complete
+#+BEGIN_SRC emacs-lisp
+(require 'auto-complete)
+(require 'auto-complete-config)
+(ac-config-default)
+;((add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(global-auto-complete-mode 1)
+(setq-default ac-sources '(ac-source-yasnippet
+    ac-source-abbrev
+    ac-source-dictionary
+    ac-source-words-in-same-mode-buffers))
+(ac-set-trigger-key "TAB")
+(ac-set-trigger-key "<tab>")
+(setq ac-auto-show-menu t)
+(setq ac-use-fuzzy t)
+(setq ac-show-menu-immediately-on-auto-complete t)
+(setq ac-auto-start 2)
+#+END_SRC
+* COMMENT Create and customize hooks for programming
+** highlight paranthesis
+#+BEGIN_SRC emacs-lisp
+(require 'highlight-paranthesis)
+(add-hook emacs-startup-hook 'highlight-paranthesis-mode)
+(highlight-leading-spaces-mode)
+#+END_SRC
+** Highlight leading spaces
+#+BEGIN_SRC emacs-lisp
+(highlight-leading-spaces-mode)
+#+END_SRC
+* COMMENT Ledger Mode
+    To keep track of money
+#+BEGIN_SRC emacs-lisp
+(require 'ledger-mode)
+
+;(add-hook 'ledger-mode-hook
+    ;'(lambda ()
+    ;(when (eq major-mode 'ledger-mode)
+    ;(add-hook 'before-save-hook 'ledger-mode-clean-buffer)))
+;)
+(add-hook 'ledger-mode-hook 'auto-complete-mode)
+(add-hook 'ledger-mode-hook 'flymake-mode)
+(add-hook 'ledger-mode-hook 'company-mode)
 
 #+END_SRC
