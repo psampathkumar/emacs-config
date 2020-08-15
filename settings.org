@@ -1,3 +1,8 @@
+The Purpose of this type of org-mode configuration is to 
+be able to easily turn on and off the various modes with the comment button 
+infront of the mode. Care is taken to keep different parts operating independently.
+
+
 TODO:
     - Refactor Code using =use-package=
     - Set priority for package sources
@@ -346,8 +351,9 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 #+BEGIN_SRC emacs-lisp
 ;Mini Buffer completion
 ;(icomplete-mode 1)
-(require 'ivy)
-(ivy-mode 1)
+(use-package ivy
+:config (ivy-mode 1)
+)
 #+END_SRC
 ** DOOM THEME
     #+BEGIN_SRC emacs-lisp
@@ -368,62 +374,64 @@ When point goes outside the window, Emacs usually recenters the buffer point.
     #+END_SRC
 ** Centaur Tabs
 #+BEGIN_SRC emacs-lisp
-(require 'centaur-tabs)
-(centaur-tabs-mode t)
-(global-set-key (kbd "C-<prior>")  'centaur-tabs-backward)
-(global-set-key (kbd "C-<next>") 'centaur-tabs-forward)
+(use-package centaur-tabs
+:config
+    (centaur-tabs-mode t)
+    (global-set-key (kbd "C-<prior>")  'centaur-tabs-backward)
+    (global-set-key (kbd "C-<next>") 'centaur-tabs-forward)
 
-(defun n () 
-    (interactive)
-    (centaur-tabs-forward))
+    (defun n () 
+        (interactive)
+        (centaur-tabs-forward))
 
-(defun N () 
-    (interactive)
-    (centaur-tabs-backward))
+    (defun N () 
+        (interactive)
+        (centaur-tabs-backward))
 
-(centaur-tabs-headline-match)
-(setq centaur-tabs-style "bar")
-(defun centaur-tabs-buffer-groups ()
-    "`centaur-tabs-buffer-groups' control buffers' group rules.
+    (centaur-tabs-headline-match)
+    (setq centaur-tabs-style "bar")
+    (defun centaur-tabs-buffer-groups ()
+        "`centaur-tabs-buffer-groups' control buffers' group rules.
 
-    Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
-    All buffer name start with * will group to \"Emacs\".
-    Other buffer group by `centaur-tabs-get-group-name' with project name."
-    (list
-    (cond
-    ;; ((not (eq (file-remote-p (buffer-file-name)) nil))
-    ;; "Remote")
-    ((or (string-equal "*" (substring (buffer-name) 0 1))
-    (memq major-mode '(magit-process-mode
-    magit-status-mode
-    magit-diff-mode
-    magit-log-mode
-    magit-file-mode
-    magit-blob-mode
-    magit-blame-mode
-    )))
-    "Emacs")
-    ((memq major-mode '(org-mode
-    python-mode
-    latex-mode
-    fundamental-mode
-    sh-mode
-    org-agenda-clockreport-mode
-    org-src-mode
-    org-agenda-mode
-    org-beamer-mode
-    org-indent-mode
-    org-bullets-mode
-    org-cdlatex-mode
-    org-agenda-log-mode
-    diary-mode
-    ))
-    "Work")
-    (t
-    (centaur-tabs-get-group-name (current-buffer))))))
+        Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+        All buffer name start with * will group to \"Emacs\".
+        Other buffer group by `centaur-tabs-get-group-name' with project name."
+        (list
+        (cond
+        ;; ((not (eq (file-remote-p (buffer-file-name)) nil))
+        ;; "Remote")
+        ((or (string-equal "*" (substring (buffer-name) 0 1))
+        (memq major-mode '(magit-process-mode
+        magit-status-mode
+        magit-diff-mode
+        magit-log-mode
+        magit-file-mode
+        magit-blob-mode
+        magit-blame-mode
+        )))
+        "Emacs")
+        ((memq major-mode '(org-mode
+        python-mode
+        latex-mode
+        fundamental-mode
+        sh-mode
+        org-agenda-clockreport-mode
+        org-src-mode
+        org-agenda-mode
+        org-beamer-mode
+        org-indent-mode
+        org-bullets-mode
+        org-cdlatex-mode
+        org-agenda-log-mode
+        diary-mode
+        ))
+        "Work")
+        (t
+        (centaur-tabs-get-group-name (current-buffer))))))
+)
 #+END_SRC
  
-** PopWin
+** COMMENT PopWin
    popwin is a popup window manager for Emacs which makes you free from 
    the hell of annoying buffers such like *Help*, *Completions*, *compilation*, and etc
 #+BEGIN_SRC emacs-lisp
@@ -474,7 +482,7 @@ When point goes outside the window, Emacs usually recenters the buffer point.
               (unless (file-remote-p default-directory)
                 (auto-revert-mode))))
   :config
-  (global-set-key "\C-cf" 'dired-sidebar-toggle-sidebar)
+  (global-set-key "\C-cd" 'dired-sidebar-toggle-sidebar)
   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
   (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
   (setq dired-sidebar-subtree-line-prefix "__")
@@ -485,14 +493,17 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 To search for selected text from emacs
 #+BEGIN_SRC emacs-lisp
 ;Engine Mode
-(require 'engine-mode) 
+(use-package engine-mode
 
-(defengine duckduckgo
-    "https://duckduckgo.com/?q=%s"
-:keybinding "d")
+:config
+    (defengine duckduckgo
+        "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
 
-(engine-mode t)
-(defalias 'duck 'engine/search-duckduckgo)
+    (engine-mode t)
+    ;use via evil command
+    (defalias 'duck 'engine/search-duckduckgo)
+)
 #+END_SRC
 * Python Stuff
 ** Shorter commands for evil
@@ -563,13 +574,15 @@ Move like the Wind, Shadow fax
 #+BEGIN_SRC emacs-lisp
 
 ;For Org
-(require 'org-bullets)
+(use-package org-bullets
 ;;For Bullets
-(add-hook 'org-mode-hook
-    (lambda ()
-    (org-bullets-mode t))
+:config
+    (add-hook 'org-mode-hook
+        (lambda ()
+        (org-bullets-mode t))
+    )
+    (setq org-ellipsis " ⤵")
 )
-(setq org-ellipsis " ⤵")
 
 ;(global-set-key (kbd "<f7>") 'org-agenda)
 ;(global-set-key (kbd "<f6>") 'org-capture)
@@ -587,16 +600,18 @@ Move like the Wind, Shadow fax
 #+END_SRC
 ** Super Org-Agenda
 #+BEGIN_SRC emacs-lisp
-(require 'org-super-agenda)
-(add-hook 'org-mode-hook 'org-super-agenda-mode)
-(setq org-super-agenda-groups
-    '(
-    (:name "Important"
-    ;; Single arguments given alone
-    :priority "A")
-    (:auto-tags t) ; Auto seperate tags
-    (:habit t)
-    (:auto-group t) ; auto seperate groups
+(use-package org-super-agenda
+:config
+    (add-hook 'org-mode-hook 'org-super-agenda-mode)
+    (setq org-super-agenda-groups
+        '(
+        (:name "Important"
+        ;; Single arguments given alone
+        :priority "A")
+        (:auto-tags t) ; Auto seperate tags
+        (:habit t)
+        (:auto-group t) ; auto seperate groups
+        )
     )
 )
 #+END_SRC

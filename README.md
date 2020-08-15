@@ -1,9 +1,12 @@
 # emacs-config
-The Name says it all
+The Name says it all. 
 
+The Purpose of this repo is to have a extremely beginner friendly configuration process to 
+emacs using the power of org-mode. It loads a lot of packages which I think are really useful for
+someone who is not a regular programmer. 
 
-*I just started this repo*, I'll gradually update it.
+It is made so such that, various factors can just be turned off and on by using the comment function of org-mode.
 
+This repo is definitely not as much fun as playing with the config files yourself, but if it makes some beginner try out emacs
+without worrying about the initial configuration. I will be happy.
 
-This emacs config is for people who don't really use emacs for coding but using it for writing purposes, and ofcourse org-mode.
-I just got into this and i'll keep updating this as i go along and learn
