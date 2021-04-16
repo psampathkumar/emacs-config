@@ -13,8 +13,9 @@ TODO:
     - [[https://stackoverflow.com/questions/2081577/setting-emacs-to-split-buffers-side-by-side][Split Buffer Horizontally]]
     - Company mode segment has massive code, Split into subheadings with explanations
     - Fix Company AUTEX or use RevTex backend instead
-    - Fix company-yas [[ https://emacs.stackexchange.com/questions/7908/how-to-make-yasnippet-and-company-work-nicer][SO Answer]]
-    - File open shortcuts ? 
+    - Fix company-yas [[https://emacs.stackexchange.com/questions/7908/how-to-make-yasnippet-and-company-work-nicer][SO Answer]]
+    - File open shortcuts ?
+    - Split each package to different headings and link to the github repo
 FONT TEST:
     normal
     =emph=
@@ -29,9 +30,6 @@ FONT TEST:
   :ensure t
   :init (setq git-commit-summary-max-length 50)
 )
-(use-package evil-magit
-  :ensure t
-)
 (use-package diff-hl
   :ensure t
   :init 
@@ -40,15 +38,34 @@ FONT TEST:
 )
 #+END_SRC
 * Evil Mode
-** Evil Mode Settings
+** Enable Evil Mode 
 The only reason I even began to consider using emacs was this super awesome mode.
 #+BEGIN_SRC emacs-lisp
 ; Use evil mode
 (use-package evil
-  :config (evil-mode t)
-)
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+#+END_SRC
+** Evil Collection
+#+BEGIN_SRC emacs-lisp
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+#+END_SRC
+** Evil Quickscope
+   inspired from vim-quickscope, Highlight letters whenever you press "f" to quickly spot places to jump to
+#+BEGIN_SRC emacs-lisp
 (use-package evil-quickscope
+  :after evil
+  :ensure t
   :config (global-evil-quickscope-mode 1)
+  ;(add-hook 'python-mode-hook 'turn-on-evil-quickscope-always-mode)
 )
 #+END_SRC
 ** Relative Numbers
@@ -138,6 +155,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
 ;;                      )
 ;;         )
 ;;      )
+:ensure t
 :config
     (elpy-enable)
     ;keep the backend as jedi
@@ -166,7 +184,6 @@ If I'm using EVIL. Why not make the best setting on VIM work
 #+BEGIN_SRC emacs-lisp
 (add-hook 'python-mode-hook 'hs-minor-mode)
 (add-hook 'python-mode-hook 'electric-pair-mode)
-(add-hook 'python-mode-hook 'turn-on-evil-quickscope-always-mode)
 ;(add-hook 'python-mode-hook
 ;          (lambda ()
 ;            (define-key python-mode-map "\"" 'electric-pair)
@@ -181,85 +198,91 @@ If I'm using EVIL. Why not make the best setting on VIM work
 (global-set-key (kbd "C-c -") 'split-window-below)
 #+END_SRC
 * Company mode
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :diminish company-mode
-    :init
-    (global-company-mode)
-    :config
-    ;; set default `company-backends'
-    (use-package company-dict)
-    (setq company-backends
-          '(
-             (company-yasnippet)
-             (
-             company-files          ; files & directory
-             company-dict       ; keywords
-             company-capf
-    ;         company-ispell
-    ;         company-semantic
-             )  ; completion-at-point-functions
-             (company-abbrev company-dabbrev)
-             (company-math-symbols-unicode)
-           )
-    )
-    (use-package company-statistics
-      :config
-      (company-statistics-mode)
-    )
-    (use-package company-quickhelp
-      :config
-      (company-quickhelp-mode)
-    )
-    
-    (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
-    (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
-  
-    (setq company-auto-complete t)
-  
-    (defun my-company-visible-and-explicit-action-p ()
-      (and (company-tooltip-visible-p)
-           (company-explicit-action-p)))
+    #+BEGIN_SRC emacs-lisp
+    (use-package company
+        :diminish company-mode
+        :init
+        (global-company-mode)
+        :config
+        ;; set default `company-backends'
+        (use-package company-dict)
+        (setq company-backends
+            '(
+                (company-yasnippet)
+                (
+                company-files          ; files & directory
+                company-dict       ; keywords
+                company-capf
+                company-ispell
+                company-semantic
+                )  ; completion-at-point-functions
+                (company-abbrev company-dabbrev)
+                (company-math-symbols-unicode)
+            )
+        )
+        (use-package company-statistics
+        :config
+        (company-statistics-mode)
+        )
+        (use-package company-quickhelp
+        :config
+        (company-quickhelp-mode)
+        )
 
-    (defun company-ac-setup ()
-      "Sets up `company-mode' to behave similarly to `auto-complete-mode'."
-      (setq company-require-match nil)
-      (setq company-auto-complete #'my-company-visible-and-explicit-action-p)
-      (setq company-frontends '(company-echo-metadata-frontend
-                                company-pseudo-tooltip-unless-just-one-frontend-with-delay
-                                company-preview-frontend))
-      (define-key company-active-map [tab]
-        'company-select-next-if-tooltip-visible-or-complete-selection)
-      (define-key company-active-map (kbd "TAB")
-        'company-select-next-if-tooltip-visible-or-complete-selection)
-    )
-    (company-ac-setup)
-    (setq company-require-match nil)            ; Don't require match, so you can still move your cursor as expected.
-    (setq company-tooltip-align-annotations t)  ; Align annotation to the right side.
-    (setq company-eclim-auto-save nil)          ; Stop eclim auto save.
-    (setq company-dabbrev-downcase nil)         ; No downcase when completion
-    (setq company-minimum-prefix-length 1)
-    (setq company-idle-delay 0)
+        (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+        (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
 
-    (advice-add 'company-complete-common :before (lambda () (setq my-company-point (point))))
-    (advice-add 'company-complete-common :after (lambda ()
-                                                    (when (equal my-company-point (point))
-                                                    (yas-expand)
+        (setq company-auto-complete t)
+
+        (defun my-company-visible-and-explicit-action-p ()
+        (and (company-tooltip-visible-p)
+            (company-explicit-action-p)))
+
+        (defun company-ac-setup ()
+        "Sets up `company-mode' to behave similarly to `auto-complete-mode'."
+        (setq company-require-match nil)
+        (setq company-auto-complete #'my-company-visible-and-explicit-action-p)
+        (setq company-frontends '(company-echo-metadata-frontend
+                                    company-pseudo-tooltip-unless-just-one-frontend-with-delay
+                                    company-preview-frontend))
+        (define-key company-active-map [tab]
+            'company-select-next-if-tooltip-visible-or-complete-selection)
+        (define-key company-active-map (kbd "TAB")
+            'company-select-next-if-tooltip-visible-or-complete-selection)
+        )
+        (company-ac-setup)
+        (setq company-require-match nil)            ; Don't require match, so you can still move your cursor as expected.
+        (setq company-tooltip-align-annotations t)  ; Align annotation to the right side.
+        (setq company-eclim-auto-save nil)          ; Stop eclim auto save.
+        (setq company-dabbrev-downcase nil)         ; No downcase when completion
+        (setq company-minimum-prefix-length 1)
+        (setq company-idle-delay 0)
+
+        (advice-add 'company-complete-common :before (lambda () (setq my-company-point (point))))
+        (advice-add 'company-complete-common :after (lambda ()
+                                                        (when (equal my-company-point (point))
+                                                        (yas-expand)
+                                                        )
                                                     )
-                                                )
+        )
     )
-  )
-  (use-package company-autex
-    :after (autex company)
-    :config
-    (company-autex-init)
-  )
-  (use-package company-fuzzy
-     :config
-     (global-company-fuzzy-mode 1)
-     (setq company-fuzzy-sorting-backend 'alphabetic)
-  )
-#+END_SRC
+    (use-package company-autex
+        :after (autex company)
+        :config
+        (company-autex-init)
+    )
+    #+END_SRC
+** COMMENT Company Fuzzy
+   Implement fuzzy search
+    #+BEGIN_SRC emacs-lisp
+    (use-package company-fuzzy
+        :after (company)
+        :ensure t
+        :config
+        (global-company-fuzzy-mode 1)
+        (setq company-fuzzy-sorting-backend 'alphabetic)
+    )
+    #+END_SRC
 * UI Choices
 ** COMMENT I3 Settings
     Not using for Now
@@ -375,6 +398,7 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 ** Centaur Tabs
 #+BEGIN_SRC emacs-lisp
 (use-package centaur-tabs
+:ensure t
 :config
     (centaur-tabs-mode t)
     (global-set-key (kbd "C-<prior>")  'centaur-tabs-backward)
@@ -537,6 +561,10 @@ To search for selected text from emacs
 #+BEGIN_SRC emacs-lisp
 (setq python-indent-offset 4)
 #+END_SRC
+* C/C++ Stuff
+** RTags
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
 * Wind Move
 Move like the Wind, Shadow fax
 #+BEGIN_SRC emacs-lisp
@@ -632,8 +660,8 @@ Move like the Wind, Shadow fax
     ))
     
 
-;(load "auctex.el" nil t t)
-;(load "preview-latex.el" nil t t)
+(load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
 #+END_SRC
 * YAS Snippets
 #+BEGIN_SRC emacs-lisp
