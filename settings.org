@@ -11,11 +11,11 @@ TODO:
     - [[https://medium.com/analytics-vidhya/managing-a-python-development-environment-in-emacs-43897fd48c6a][Python IDE]]
     - write-good
     - [[https://stackoverflow.com/questions/2081577/setting-emacs-to-split-buffers-side-by-side][Split Buffer Horizontally]]
-    - Company mode segment has massive code, Split into subheadings with explanations
     - Fix Company AUTEX or use RevTex backend instead
     - Fix company-yas [[https://emacs.stackexchange.com/questions/7908/how-to-make-yasnippet-and-company-work-nicer][SO Answer]]
     - File open shortcuts ?
     - Split each package to different headings and link to the github repo
+    - Tabnine
 FONT TEST:
     normal
     =emph=
@@ -26,16 +26,16 @@ FONT TEST:
     +strike+
 * Magit and hl-diff
 #+BEGIN_SRC emacs-lisp
-(use-package magit
-  :ensure t
-  :init (setq git-commit-summary-max-length 50)
-)
-(use-package diff-hl
-  :ensure t
-  :init 
-    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-    (global-diff-hl-mode)
-)
+  (use-package magit
+    :ensure t
+    :init (setq git-commit-summary-max-length 50)
+  )
+  (use-package diff-hl
+    :ensure t
+    :init 
+      (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+      (global-diff-hl-mode)
+  )
 #+END_SRC
 * Evil Mode
 ** Enable Evil Mode 
@@ -194,7 +194,7 @@ If I'm using EVIL. Why not make the best setting on VIM work
 #+END_SRC
 * My Tmux functionality here too
     #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-c |") 'split-window-right)
+(global-set-key (kbd "C-c \\") 'split-window-right)
 (global-set-key (kbd "C-c -") 'split-window-below)
 #+END_SRC
 * Company mode
@@ -437,6 +437,7 @@ When point goes outside the window, Emacs usually recenters the buffer point.
         ((memq major-mode '(org-mode
         python-mode
         latex-mode
+        javascript-mode
         fundamental-mode
         sh-mode
         org-agenda-clockreport-mode
@@ -513,6 +514,14 @@ When point goes outside the window, Emacs usually recenters the buffer point.
   (setq dired-sidebar-theme 'icons)
   (setq dired-sidebar-use-custom-font t))
    #+END_SRC
+** Rainbow Delimiters
+   #+BEGIN_SRC emacs-lisp
+     (use-package rainbow-delimiters
+     :config
+       (add-hook 'python-mode-hook #'rainbow-delimiters-mode)
+       (add-hook 'latex-mode-hook #'rainbow-delimiters-mode)
+     )
+   #+END_SRC
 * Engine Mode
 To search for selected text from emacs
 #+BEGIN_SRC emacs-lisp
@@ -564,6 +573,14 @@ To search for selected text from emacs
 * C/C++ Stuff
 ** RTags
 #+BEGIN_SRC emacs-lisp
+  (eval-after-load "cc-mode"
+    '(progn
+       (define-key c-mode-map   (kbd "C-c C-c") 'compile)
+       (define-key c-mode-map   (kbd "") 'comment-region)
+       (define-key c++-mode-map (kbd "C-c C-c") 'compile)
+       (define-key c++-mode-map   (kbd "") 'comment-region)
+     )
+  )
 #+END_SRC
 * Wind Move
 Move like the Wind, Shadow fax
@@ -636,9 +653,9 @@ Move like the Wind, Shadow fax
         (:name "Important"
         ;; Single arguments given alone
         :priority "A")
+        (:auto-group t) ; auto seperate groups
         (:auto-tags t) ; Auto seperate tags
         (:habit t)
-        (:auto-group t) ; auto seperate groups
         )
     )
 )
