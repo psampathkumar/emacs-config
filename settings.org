@@ -24,14 +24,26 @@ FONT TEST:
     /italics/
     _uline_
     +strike+
+* Autodownload/update package emacs
+#+BEGIN_SRC emacs-lisp
+    (require 'use-package-ensure)
+    (setq use-package-always-ensure t)
+    (use-package auto-package-update
+      :config
+      (setq auto-package-update-delete-old-versions t)
+      (setq auto-package-update-hide-results t)
+      (auto-package-update-at-time "03:00")
+      (setq auto-package-update-prompt-before-update t)
+      (setq auto-package-update-show-preview t)
+      (auto-package-update-maybe)
+    )
+#+END_SRC
 * Magit and hl-diff
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :ensure t
     :init (setq git-commit-summary-max-length 50)
   )
   (use-package diff-hl
-    :ensure t
     :init 
       (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
       (global-diff-hl-mode)
@@ -43,7 +55,6 @@ The only reason I even began to consider using emacs was this super awesome mode
 #+BEGIN_SRC emacs-lisp
 ; Use evil mode
 (use-package evil
-  :ensure t
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
@@ -54,7 +65,6 @@ The only reason I even began to consider using emacs was this super awesome mode
 #+BEGIN_SRC emacs-lisp
 (use-package evil-collection
   :after evil
-  :ensure t
   :config
   (evil-collection-init))
 #+END_SRC
@@ -63,7 +73,6 @@ The only reason I even began to consider using emacs was this super awesome mode
 #+BEGIN_SRC emacs-lisp
 (use-package evil-quickscope
   :after evil
-  :ensure t
   :config (global-evil-quickscope-mode 1)
   ;(add-hook 'python-mode-hook 'turn-on-evil-quickscope-always-mode)
 )
@@ -155,7 +164,6 @@ If I'm using EVIL. Why not make the best setting on VIM work
 ;;                      )
 ;;         )
 ;;      )
-:ensure t
 :config
     (elpy-enable)
     ;keep the backend as jedi
@@ -277,7 +285,6 @@ If I'm using EVIL. Why not make the best setting on VIM work
     #+BEGIN_SRC emacs-lisp
     (use-package company-fuzzy
         :after (company)
-        :ensure t
         :config
         (global-company-fuzzy-mode 1)
         (setq company-fuzzy-sorting-backend 'alphabetic)
@@ -294,7 +301,6 @@ If I'm using EVIL. Why not make the best setting on VIM work
 ** Title Bar
 #+BEGIN_SRC emacs-lisp
 (use-package diminish
-:ensure t
 )
 (setq frame-title-format "%b")
 #+END_SRC
@@ -398,7 +404,6 @@ When point goes outside the window, Emacs usually recenters the buffer point.
 ** Centaur Tabs
 #+BEGIN_SRC emacs-lisp
 (use-package centaur-tabs
-:ensure t
 :config
     (centaur-tabs-mode t)
     (global-set-key (kbd "C-<prior>")  'centaur-tabs-backward)
@@ -711,7 +716,6 @@ Move like the Wind, Shadow fax
 * Flycheck Mode
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode)
   :config
     (defun err () 
