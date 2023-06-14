@@ -17,7 +17,7 @@
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (add-to-list 'load-path "~/.emacs.d/elisp-codes/")
 (setq package-enable-at-startup nil)
-(package-initialize)
+;(package-initialize)
 
 
 ;A seperate folder with all the settings

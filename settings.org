@@ -40,9 +40,9 @@ FONT TEST:
 #+END_SRC
 * Magit and hl-diff
 #+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :init (setq git-commit-summary-max-length 50)
-  )
+  ;(use-package magit
+    ;:init (setq git-commit-summary-max-length 50)
+  ;)
   (use-package diff-hl
     :init 
       (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
@@ -56,8 +56,8 @@ The only reason I even began to consider using emacs was this super awesome mode
 ; Use evil mode
 (use-package evil
   :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   :config
   (evil-mode 1))
 #+END_SRC
@@ -274,11 +274,11 @@ If I'm using EVIL. Why not make the best setting on VIM work
                                                     )
         )
     )
-    (use-package company-autex
-        :after (autex company)
-        :config
-        (company-autex-init)
-    )
+    ;(use-package company-autex
+        ;:after (autex company)
+        ;:config
+        ;(company-autex-init)
+    ;)
     #+END_SRC
 ** COMMENT Company Fuzzy
    Implement fuzzy search
@@ -615,10 +615,10 @@ Move like the Wind, Shadow fax
     (add-hook 'org-mode-hook 'evil-org-mode)
     (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
 )
-(use-package evil-org-agenda
-:config
-(evil-org-agenda-set-keys)
-)
+;(use-package evil-org-agenda
+;:config
+;(evil-org-agenda-set-keys)
+;)
 #+END_SRC
 ** Basic
 #+BEGIN_SRC emacs-lisp
